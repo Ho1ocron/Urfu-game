@@ -2,6 +2,8 @@ from sys import exit as sys_exit
 import pygame
 
 from utils.settings import GameProperties
+from utils.sprite_handler import SpriteHandler
+from entities.entity import Knight
 
 
 class Game:
@@ -24,6 +26,10 @@ class Game:
         except:
             print(self.__screen_size)
             sys_exit()
+
+        sprite_handler = SpriteHandler("./assets/Knight.png", 1)
+        sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], 'RGB')
+        self._player = Knight(10, 10, [], sprite=sprite)
 
 
     def run(self) -> None:
