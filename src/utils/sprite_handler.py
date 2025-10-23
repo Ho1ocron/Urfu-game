@@ -1,7 +1,7 @@
 import cv2
 from cv2.typing import MatLike
-import numpy as np
 
+from utils.settings import GameProperties
 
 class SpriteHandler:
     _sprite_size: int = 192
@@ -14,7 +14,8 @@ class SpriteHandler:
     _image: MatLike
 
     def __init__(self, sheet_path: str, scale: float = 1.0):
-        self._scale = scale
+        game_properties = GameProperties()
+        self._scale = game_properties.scale
         self._sprites_bytes = []
 
         # Load sprite sheet (with alpha channel if present)

@@ -27,6 +27,10 @@ class GameProperties:
             self._screen_size = tuple(map(int, res.split("*")))
 
             self._width, self._height = self._screen_size
+
+    @property
+    def scale(self):
+        return self._scale
     
     @property
     def screen_size(self):
