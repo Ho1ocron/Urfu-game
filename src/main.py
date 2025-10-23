@@ -12,7 +12,7 @@ class Game:
     __screen: pygame.Surface
     __clock = pygame.time.Clock()
 
-    BLACK = "#301934"
+    BLACK = (0, 0, 0)
 
     def __init__(self, scale: float, width: int, height: int) -> None:
         self._scale = scale
@@ -29,7 +29,7 @@ class Game:
             if event.type == pygame.QUIT:
                 sys_exit()
         
-        self.__screen.fill(self.BLACK)
+        self.__screen.fill((0, 0, 0))
         pygame.display.flip()
         self.__clock.tick(25)        
     
