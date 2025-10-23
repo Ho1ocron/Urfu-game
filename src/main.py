@@ -1,12 +1,13 @@
 from sys import exit as sys_exit
 import pygame
 
+from utils.settings import GameProperties
+
 
 class Game:
     """Base class that controls the whole game."""
+    _game_properties = GameProperties()
     _scale: float
-    _width: int
-    _height: int
 
     __screen_size: tuple[int, int]
     __screen: pygame.Surface
@@ -14,14 +15,15 @@ class Game:
 
     BLACK = (0, 0, 0)
 
-    def __init__(self, scale: float, width: int, height: int) -> None:
-        self._scale = scale
-        self._width = width
-        self._height = height
-        self.__screen_size = int(self._width * self._scale), int(self._height * self._scale)
+    def __init__(self) -> None:
+        self.__screen_size = self._game_properties.screen_size
 
         pygame.init()
-        self.__screen = pygame.display.set_mode(self.__screen_size)
+        try:
+            self.__screen = pygame.display.set_mode(self.__screen_size)
+        except:
+            print(self.__screen_size)
+            sys_exit()
 
 
     def run(self) -> None:
@@ -35,7 +37,7 @@ class Game:
     
 
 def main() -> None:
-    game = Game(2.5, 310, 246)
+    game = Game()
 
     while True:
         game.run()
