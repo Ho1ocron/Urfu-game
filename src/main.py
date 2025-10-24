@@ -2,7 +2,6 @@ from sys import exit as sys_exit
 import pygame
 
 from utils import GameProperties
-from utils import SpriteHandler
 from entities import Knight
 
 
