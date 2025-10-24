@@ -30,6 +30,7 @@ class SpriteHandler:
         self._image = self._sheet[y:y+64, x:x+64]
         self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
         self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
+        self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
         
 
     @property

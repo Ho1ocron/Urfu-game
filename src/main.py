@@ -6,7 +6,7 @@ from utils.sprite_handler import SpriteHandler
 from entities.entity import Knight
 
 
-class Game:
+class Game(pygame.sprite.Group):
     """Base class that controls the whole game."""
     _game_properties = GameProperties()
     _scale: float
@@ -18,18 +18,13 @@ class Game:
     BLACK = (0, 0, 0)
 
     def __init__(self) -> None:
+        super().__init__()
         self.__screen_size = self._game_properties.screen_size
-
         pygame.init()
-        try:
-            self.__screen = pygame.display.set_mode(self.__screen_size)
-        except:
-            print(self.__screen_size)
-            sys_exit()
+        self.__screen = pygame.display.set_mode(self.__screen_size)
 
-        sprite_handler = SpriteHandler("./assets/Knight.png", 1)
-        sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], 'RGB')
-        self._player = Knight(10, 10, [], sprite=sprite)
+        self.player_group = pygame.sprite.Group()
+        self._player = Knight(10, 10, [], group=self.player_group)
 
 
     def run(self) -> None:
