@@ -1,5 +1,5 @@
 from pygame.sprite import Sprite, Group
-from pygame import image
+from pygame import image, Surface
 
 from utils.sprite_handler import SpriteHandler
 
@@ -46,7 +46,12 @@ class Knight(Sprite):
         except:
             print(f"{sprite_handler.sprite.shape=}")
             return
-        self._sprite = sprite
-
+        
+        self.image = sprite
+        self.rect = self.image.get_rect()
+        self.rect.center = (200, 200)
+        # self.image = Surface((50, 50))
+        # self.image.fill((255, 0, 0))  # bright red square
+        # self.rect = self.image.get_rect(center=(320, 240))
 
 
