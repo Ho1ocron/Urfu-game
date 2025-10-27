@@ -53,7 +53,14 @@ class Knight(Sprite):
         self.image = sprite
         self.original_image = self.image
         self.rect = self.image.get_rect()
-        self.rect.center = (200, 200)
+        self.rect.center = (50, 200)
+        self.hitbox_margin = 8
+        self.hitbox = pygame.Rect(
+            self.rect.x + self.hitbox_margin,
+            self.rect.y + self.hitbox_margin,
+            self.rect.width - self.hitbox_margin*2,
+            self.rect.height - self.hitbox_margin*2
+        )
         # self.image = Surface((50, 50))
         # self.image.fill((255, 0, 0))  # bright red square
         # self.rect = self.image.get_rect(center=(320, 240))
