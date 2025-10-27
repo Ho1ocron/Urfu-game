@@ -3,7 +3,11 @@
         "ScreenSize": "310*246",
         "Scale": 2,
         "Background_color": [0, 0, 0],
-        "Difficulty": "Normal"
+        "Difficulty": "Normal",
+
+        "Controls": {
+            "Attack": "Key_Enter"
+        }
     },
 
     "EntityProperties": {
