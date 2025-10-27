@@ -34,6 +34,7 @@ class Knight(Sprite):
     _hitbox: list
     _sprite: Sprite
     _speed: int
+    facing_right: bool = True
 
     def __init__(self, hp: int, attack: int, hitbox, group: Group, speed: int):
         super().__init__(group)
@@ -50,6 +51,7 @@ class Knight(Sprite):
             return
         
         self.image = sprite
+        self.original_image = self.image
         self.rect = self.image.get_rect()
         self.rect.center = (200, 200)
         # self.image = Surface((50, 50))
@@ -59,8 +61,14 @@ class Knight(Sprite):
     def handle_input(self, keys):
         if keys[pygame.K_LEFT]:
             self.rect.x -= self._speed
+            if self.facing_right:  # only flip if currently facing right
+                self.image = pygame.transform.flip(self.original_image, True, False)
+                self.facing_right = False
         if keys[pygame.K_RIGHT]:
             self.rect.x += self._speed
+            if not self.facing_right:  # only flip if currently facing left
+                self.image = pygame.transform.flip(self.original_image, False, False)
+                self.facing_right = True
         if keys[pygame.K_UP]:
             self.rect.y -= self._speed
         if keys[pygame.K_DOWN]:
