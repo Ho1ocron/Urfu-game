@@ -25,6 +25,8 @@ class GameProperties:
     # Controls
     _key_bindings: dict[str: str]
 
+    _debug: bool
+
     # Knight (player) properties
 
     # Dragon properties
@@ -41,6 +43,8 @@ class GameProperties:
             self._screen_size = tuple(map(int, res.split("*")))
             self._width, self._height = self._screen_size
 
+            self._debug = self._settings["GameProperties"]["DEBUG"]
+
             # Получаем спрайт
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
@@ -49,7 +53,11 @@ class GameProperties:
 
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
-            
+    
+    @property
+    def debug(self) -> bool:
+        return self._debug
+
     @property
     def controls(self) -> dict[str: str]:
         controls = {action: getattr(pygame, key_name) for action, key_name in self._key_bindings.items()}

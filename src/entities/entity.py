@@ -63,7 +63,7 @@ class Knight(pygame.sprite.Sprite):
         self.image = self._get_current_frame()
         self.rect = self.image.get_rect(center=init_pos)
 
-        self.hitbox_margin = 2
+        self.hitbox_margin = 0
         self.hitbox = pygame.Rect(
             self.rect.x + self.hitbox_margin,
             self.rect.y + self.hitbox_margin,

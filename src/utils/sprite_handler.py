@@ -24,15 +24,16 @@ class SpriteHandler:
     NUM_SPRITES: int
 
     _sprite_properties: dict[str: int]
+
     #--------Sprites--------#
     _sprite_sheets: dict[str: MatLike]
     _image: MatLike
+
     #-----------animation frame lists------------#
     _animation_up = list[MatLike]
     _animation_down = list[MatLike]
     _animation_left = list[MatLike]
     _animation_right = list[MatLike]
-
 
     def __init__(
         self, 
