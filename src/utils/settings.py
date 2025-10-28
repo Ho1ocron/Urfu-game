@@ -70,7 +70,8 @@ class GameProperties:
         return self._char_properties
     
     @property
-    def _char_assets_pathes(self) -> dict[str: str]
+    def char_assets_pathes(self) -> dict[str: str]:
+        ...
 
     @property
     def screen_size(self) -> tuple[int, int]:
