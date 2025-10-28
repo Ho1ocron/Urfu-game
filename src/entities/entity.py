@@ -47,15 +47,15 @@ class Knight(Sprite):
 
         self.sprite_handler = SpriteHandler(
             char_sprite="Knight",
-            sheet_path_up = "./assets/Adventure/Walk/walk_up.png", 
-            sheet_path_down = "./assets/Adventure/Walk/walk_down.png",
-            sheet_path_left = "./assets/Adventure/Walk/walk_left_down.png",
-            sheet_path_right = "./assets/Adventure/Walk/walk_right_down.png"
+            walk_sheet_path_up = "./assets/Adventure/Walk/walk_up.png", 
+            walk_sheet_path_down = "./assets/Adventure/Walk/walk_down.png",
+            walk_sheet_path_left = "./assets/Adventure/Walk/walk_left_down.png",
+            walk_sheet_path_right = "./assets/Adventure/Walk/walk_right_down.png"
         )
 
         self.direction = "down"
         self.frame_index = 0
-        self.animation_speed = 0.5
+        self.animation_speed = 0.4
 
         # try:
         #     sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], "RGB")
@@ -78,16 +78,10 @@ class Knight(Sprite):
     def _get_current_frame(self):
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self.sprite_handler.animation[self.direction]
-        if not frames:
-            surf = pygame.Surface((48, 64))
-            surf.fill((255, 0, 0))
-            return surf
         frame: MatLike = frames[int(self.frame_index) % len(frames)]
-        # self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
-        #  self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+        frame = cv2.resize(frame, None, fx=2.5, fy=2.5, interpolation=cv2.INTER_NEAREST)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
-        frame = cv2.resize(frame, None, fx=3, fy=3, interpolation=cv2.INTER_NEAREST)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
+
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     
     def handle_input(self, keys):

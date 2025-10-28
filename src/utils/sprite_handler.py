@@ -30,10 +30,10 @@ class SpriteHandler:
     def __init__(
         self, 
         char_sprite: str, 
-        sheet_path_up: str, 
-        sheet_path_down: str, 
-        sheet_path_left: str, 
-        sheet_path_right: str, 
+        walk_sheet_path_up: str, 
+        walk_sheet_path_down: str, 
+        walk_sheet_path_left: str, 
+        walk_sheet_path_right: str, 
         scale: float = 1.0
     ) -> None:
         game_properties = GameProperties(char_sprite=char_sprite)
@@ -47,10 +47,10 @@ class SpriteHandler:
         # self._sprite_properties
         self._sprites_bytes = []
         self._sprite_sheets = {
-            "up": cv2.imread(sheet_path_up, cv2.IMREAD_UNCHANGED),
-            "down": cv2.imread(sheet_path_down, cv2.IMREAD_UNCHANGED),
-            "left": cv2.imread(sheet_path_left, cv2.IMREAD_UNCHANGED),
-            "right": cv2.imread(sheet_path_right, cv2.IMREAD_UNCHANGED),
+            "up": cv2.imread(walk_sheet_path_up, cv2.IMREAD_UNCHANGED),
+            "down": cv2.imread(walk_sheet_path_down, cv2.IMREAD_UNCHANGED),
+            "left": cv2.imread(walk_sheet_path_left, cv2.IMREAD_UNCHANGED),
+            "right": cv2.imread(walk_sheet_path_right, cv2.IMREAD_UNCHANGED),
         }
 
 
