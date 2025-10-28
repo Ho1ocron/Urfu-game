@@ -79,10 +79,10 @@ class SpriteHandler:
     
     @property
     def animation(self) -> dict[str: MatLike]:
-        animation_up = self._extract_sprites(self._sprite_sheets["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_down = self._extract_sprites(self._sprite_sheets["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_left = self._extract_sprites(self._sprite_sheets["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_right = self._extract_sprites(self._sprite_sheets["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_up = self._extract_sprites(self._sprite_sheets["Walk"]["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_down = self._extract_sprites(self._sprite_sheets["Walk"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_left = self._extract_sprites(self._sprite_sheets["Walk"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_right = self._extract_sprites(self._sprite_sheets["Walk"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         return {
             "up": animation_up,
             "down": animation_down,
