@@ -1,4 +1,5 @@
 import json
+from cv2.typing import MatLike
 
 
 class GameProperties:
@@ -7,10 +8,10 @@ class GameProperties:
     _background_color: tuple[int, int, int]
     _difficulty: str
     _screen_size: tuple[int, int]
-    _scale: float
+    _game_scale: float
     _width: int
     _height: int
-
+    _sprite_sheets: dict[str: MatLike] 
     _sprite_properties: dict[str: int]
 
     # Knight (player) properties
@@ -25,17 +26,18 @@ class GameProperties:
 
             # Получаем разрешение экрана
             res: str = self._settings["GameProperties"]["ScreenSize"]
-            self._scale = self._settings["GameProperties"]["Scale"]
-            if char_sprite is not None:
-                self._player_is_sprite_sheet: bool = self._settings["EntityProperties"]["Knight"]
-                self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
+            self._game_scale = self._settings["GameProperties"]["Scale"]
             self._screen_size = tuple(map(int, res.split("*")))
-
             self._width, self._height = self._screen_size
 
+            # Получаем спрайт
+            if char_sprite is not None:
+                self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
+            
+
     @property
-    def scale(self):
-        return self._scale
+    def game_scale(self):
+        return self._game_scale
     
     @property
     def sprite_properties(self):
@@ -44,14 +46,8 @@ class GameProperties:
     @property
     def screen_size(self):
         """Returns the scaled screen size as integers."""
-        self._screen_size = int(self._width * self._scale), int(self._height * self._scale)
-        print(f"Screen size computed: {self._screen_size}")
+        self._screen_size = int(self._width * self._game_scale), int(self._height * self._game_scale)
         return self._screen_size
-
-    @property
-    def player_is_sprite_sheet(self) -> bool:
-        """Returns if player sprites are devided into each file or not"""
-        return self._player_is_sprite_sheet
     
 
 if __name__ == "__main__":

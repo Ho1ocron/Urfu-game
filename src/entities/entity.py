@@ -34,16 +34,15 @@ class Knight(Sprite):
     """Knight is a class for the player"""
     _hp: int
     _attack: int
-    _hitbox: list
     _sprite: Sprite
     _speed: int
+    _init_pos: tuple[int]
     facing_right: bool = True
 
-    def __init__(self, hp: int, attack: int, hitbox, group: Group, speed: int):
+    def __init__(self, hp: int, attack: int, group: Group, speed: int, init_pos: tuple[int]) -> None:
         super().__init__(group)
         self._hp = hp
         self._attack = attack
-        self._hitbox = hitbox
         self._speed = speed
 
         self.sprite_handler = SpriteHandler(
@@ -64,7 +63,7 @@ class Knight(Sprite):
         #     print(f"{sprite_handler.sprite.shape=}")
         #     return
         self.image = self._get_current_frame()
-        self.rect = self.image.get_rect(center=(50, 200))
+        self.rect = self.image.get_rect(center=init_pos)
 
         self.hitbox_margin = 8
         self.hitbox = pygame.Rect(
@@ -76,7 +75,7 @@ class Knight(Sprite):
         # self.image = Surface((50, 50))
         # self.image.fill((255, 0, 0))  # bright red square
         # self.rect = self.image.get_rect(center=(320, 240))
-    def _get_current_frame(self):
+    def _get_current_frame(self) -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self.sprite_handler.animation[self.direction]
         frame: MatLike = frames[int(self.frame_index) % len(frames)]
@@ -85,7 +84,7 @@ class Knight(Sprite):
 
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     
-    def handle_input(self, keys):
+    def handle_input(self, keys) -> None:
         moving = False
 
         if keys[pygame.K_LEFT]:

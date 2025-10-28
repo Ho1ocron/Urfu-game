@@ -39,11 +39,12 @@ class SpriteHandler:
         game_properties = GameProperties(char_sprite=char_sprite)
 
         sprite_properties = game_properties.sprite_properties
+
         self.SPRITE_WIDTH: int = sprite_properties["SPRITE_WIDTH"]
         self.SPRITE_HEIGHT: int = sprite_properties["SPRITE_HEIGHT"]
         self.NUM_SPRITES: int = sprite_properties["NUM_SPRITES"]
 
-        self._scale = game_properties.scale
+        self._scale = game_properties.game_scale
         # self._sprite_properties
         self._sprites_bytes = []
         self._sprite_sheets = {
