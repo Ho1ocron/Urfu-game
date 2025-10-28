@@ -68,26 +68,12 @@ class Knight(pygame.sprite.Sprite):
             self.rect.height - self.hitbox_margin,
         )
 
-    def _get_current_frame(self) -> pygame.Surface:
+    def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
-        frames = self._animation["Walk"][self.direction]
-        frame: MatLike = frames[int(self.frame_index)%len(frames)]
-        if frame.shape[2] == 4:
-            # Drop alpha for color check
-            rgb = frame[:, :, :3]
-        else:
-            rgb = frame
-
-        # Create mask where pixel is NOT black
-        mask = np.any(rgb > 0, axis=2)
-
-        # Find bounding box of non-black area
-        if np.any(mask) == self.x:
-            y, x = np.where(mask)
-            cropped = frame[np.min(y):np.max(y)+1, np.min(x):np.max(x)+1]
-        else:
-            cropped = frame  
-        return pygame.image.frombuffer(cropped.tobytes(), cropped.shape[1::-1], "RGBA")
+        frames = self._animation[action][self.direction]
+        # self.sprite_handler.animation Вызывается постоянно. Переделать
+        frame: MatLike = frames[int(self.frame_index)%len(frames)] 
+        return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGBA")
     
     def update_hitbox(self):
         """Recalculate hitbox position and size."""
@@ -123,20 +109,22 @@ class Knight(pygame.sprite.Sprite):
             moving = True
         if moving:
             self.frame_index += self.animation_speed
-        else:
-            self.frame_index = 0  # reset to idle
+        # else:
+        #     self.frame_index += 1  # reset to idle
+
+        current_action = "Walk" if moving else "Idle"
 
         # Cycle frames
-        if self.frame_index >= len(self._animation["Walk"][self.direction]):
+        self.frame_index += self.animation_speed if moving else 0.2  # idle can animate slower
+        if self.frame_index >= len(self._animation[current_action][self.direction]):
             self.frame_index = 0
-
         # Update sprite image
-        self.image = self._get_current_frame()
+        self.image = self._get_current_frame(action=current_action)
 
         # Update hitbox position
-        # self.hitbox.topleft = (
-        #     self.rect.x + self.hitbox_margin,
-        #     self.rect.y + self.hitbox_margin
-        # )
+        self.hitbox.topleft = (
+            self.rect.x + self.hitbox_margin,
+            self.rect.y + self.hitbox_margin
+        )
         self.update_hitbox()
 
