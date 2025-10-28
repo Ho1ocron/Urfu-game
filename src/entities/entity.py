@@ -55,7 +55,7 @@ class Knight(Sprite):
 
         self.direction = "down"
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.5
 
         # try:
         #     sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], "RGB")
@@ -83,6 +83,10 @@ class Knight(Sprite):
             surf.fill((255, 0, 0))
             return surf
         frame: MatLike = frames[int(self.frame_index) % len(frames)]
+        # self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
+        #  self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
+        frame = cv2.resize(frame, None, fx=3, fy=3, interpolation=cv2.INTER_NEAREST)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     

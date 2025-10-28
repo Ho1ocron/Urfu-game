@@ -37,7 +37,7 @@ class Game(pygame.sprite.Group):
         try: 
             self._player.handle_input(keys)
             self.player_group.update()
-            print(self._player.rect.x)
+            # print(self._player.rect.x)
             self._screen.fill(self.BLACK)  # clear previous frame
             self.player_group.draw(self._screen)
         except:
