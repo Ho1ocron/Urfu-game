@@ -30,14 +30,14 @@ class Game(pygame.sprite.Group):
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
 
-        self.draw_hitbox = True
+        self.draw_hitbox = False
         self.key_pressed = False
 
     def run(self) -> None:
         keys = pygame.key.get_pressed()
         self._player.handle_input(keys)
         self._screen.fill(self.BLACK)  # clear previous frame
-        self.player_group.draw(self._screen)
+        self._screen.blit(self._player.image, self._player.rect)
         # solve the issue with drawing the player
         self._player.rect.clamp_ip(self._screen_rect)
 
