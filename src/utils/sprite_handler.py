@@ -1,3 +1,4 @@
+from datetime import datetime
 from cv2.typing import MatLike
 from cv2 import (
     imread,
@@ -72,23 +73,37 @@ class SpriteHandler:
                 sprite = sheet[y:y + sprite_height, x:x + sprite_width]
                 sprite = resize(sprite, None, fx=self._scale, fy=self._scale, interpolation=INTER_NEAREST)
                 sprite = cvtColor(sprite, COLOR_BGRA2RGB)
+                sprites.append(sprite)
             except Exception as sprite_handler:
-                print(f"{sprite_handler=}")
-            sprites.append(sprite)
+                time = datetime.now()
+                print(f"{sprite_handler=}, time: {time.strftime("%M:%S")}")
+        
         return sprites
     
     @property
     def animation(self) -> dict[str: MatLike]:
-        animation_up = self._extract_sprites(self._sprite_sheets["Walk"]["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_down = self._extract_sprites(self._sprite_sheets["Walk"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_left = self._extract_sprites(self._sprite_sheets["Walk"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_right = self._extract_sprites(self._sprite_sheets["Walk"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_walk_up = self._extract_sprites(self._sprite_sheets["Walk"]["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_walk_down = self._extract_sprites(self._sprite_sheets["Walk"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_walk_left = self._extract_sprites(self._sprite_sheets["Walk"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_walk_right = self._extract_sprites(self._sprite_sheets["Walk"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        #----------Idle----------#
+        animation_idle_up = self._extract_sprites(self._sprite_sheets["Idle"]["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_idle_down = self._extract_sprites(self._sprite_sheets["Idle"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_idle_left = self._extract_sprites(self._sprite_sheets["Idle"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_idle_right = self._extract_sprites(self._sprite_sheets["Idle"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        print("sprite handler animation func is being called")
         return {
             "Walk": {
-                "up": animation_up,
-                "down": animation_down,
-                "left": animation_left,
-                "right": animation_right
+                "up": animation_walk_up,
+                "down": animation_walk_down,
+                "left": animation_walk_left,
+                "right": animation_walk_right
+            },
+            "Idle": {
+                "up": animation_idle_up,
+                "down": animation_idle_down,
+                "left": animation_idle_left,
+                "right": animation_idle_right
             }
         }
 

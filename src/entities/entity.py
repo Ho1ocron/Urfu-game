@@ -38,6 +38,7 @@ class Knight(pygame.sprite.Sprite):
     _init_pos: tuple[int]
     facing_right: bool = True
     _controls: dict[str: int]
+    _animation: dict[str: MatLike]
 
     def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int]) -> None:
         super().__init__(group)
@@ -50,6 +51,8 @@ class Knight(pygame.sprite.Sprite):
         self.direction = "down"
         self.frame_index = 0
         self.animation_speed = 0.4
+        self._animation = self.sprite_handler.animation
+        print(f"self._animation being called")
 
         self.game_props = GameProperties()
         self._controls = self.game_props.controls
@@ -67,7 +70,8 @@ class Knight(pygame.sprite.Sprite):
 
     def _get_current_frame(self) -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
-        frames = self.sprite_handler.animation["Walk"][self.direction]
+        frames = self._animation["Walk"][self.direction]
+        # self.sprite_handler.animation Вызывается постоянно. Переделать
         frame: MatLike = frames[int(self.frame_index)%len(frames)]
         if frame.shape[2] == 4:
             print("Transperant detected")
@@ -75,8 +79,6 @@ class Knight(pygame.sprite.Sprite):
             y, x = np.where(alpha > 0)
             cropped = frame[np.min(y):np.max(y)+1, np.min(x):np.max(x)+1]
         else:
-            print("Transperant not detected")
-            print(frame.shape)
             cropped = frame  # fallback
 
         return pygame.image.frombuffer(cropped.tobytes(), frame.shape[1::-1], "RGB")
@@ -119,7 +121,7 @@ class Knight(pygame.sprite.Sprite):
             self.frame_index = 0  # reset to idle
 
         # Cycle frames
-        if self.frame_index >= len(self.sprite_handler.animation["Walk"][self.direction]):
+        if self.frame_index >= len(self._animation["Walk"][self.direction]):
             self.frame_index = 0
 
         # Update sprite image
