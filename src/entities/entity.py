@@ -67,8 +67,8 @@ class Knight(pygame.sprite.Sprite):
         self.hitbox = pygame.Rect(
             self.rect.x + self.hitbox_margin,
             self.rect.y + self.hitbox_margin,
-            self.rect.width - self.hitbox_margin*2,
-            self.rect.height - self.hitbox_margin*2
+            self.rect.width - self.hitbox_margin * 2,
+            self.rect.height - self.hitbox_margin * 2
         )
         # self.image = Surface((50, 50))
         # self.image.fill((255, 0, 0))  # bright red square
@@ -76,7 +76,7 @@ class Knight(pygame.sprite.Sprite):
     def _get_current_frame(self) -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self.sprite_handler.animation[self.direction]
-        frame: MatLike = frames[int(self.frame_index) % len(frames)]
+        frame: MatLike = frames[int(self.frame_index)%len(frames)]
 
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     

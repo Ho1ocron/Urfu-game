@@ -1,4 +1,5 @@
 import json
+
 from cv2.typing import MatLike
 
 
@@ -7,13 +8,20 @@ class GameProperties:
     # Base game properties
     _background_color: tuple[int, int, int]
     _difficulty: str
+
+    # Screen
     _screen_size: tuple[int, int]
     _game_scale: float
     _width: int
     _height: int
+
+    # Sprite
     _sprite_sheets: dict[str: MatLike] 
     _sprite_properties: dict[str: int]
     _char_properties: dict[str: int]
+
+    # Controls
+    _key_bindings: dict[str: str]
 
     # Knight (player) properties
 
@@ -35,7 +43,17 @@ class GameProperties:
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
                 self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
+
+            # Получаем управление
+            self._key_bindings = self._settings["GameProperties"]["Controls"]
             
+    @property
+    def serialize_key_bindings(self) -> dict[str: str]:
+        new_key_bindings: dict[str: str] = {}
+        for key_name, key_bind in self._key_bindings.items():
+            key_bind = f"pygame.{key_bind}"
+            new_key_bindings.update({key_name: key_bind})
+        return new_key_bindings
 
     @property
     def game_scale(self) -> float:

@@ -7,10 +7,10 @@
 
         "Controls": {
             "Attack": "Key_Enter",
-            "Walk_up": "",
-            "Walk_down": "",
-            "Walk_right": "",
-            "Walk_left": ""
+            "Walk_up": "K_UP",
+            "Walk_down": "K_DOWN",
+            "Walk_right": "K_RIGHT",
+            "Walk_left": "K_LEFT"
         }
     },
 
