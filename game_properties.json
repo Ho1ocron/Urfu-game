@@ -12,7 +12,11 @@
 
     "EntityProperties": {
         "Knight": {
-            "is_sprite_sheet": false
+            "Sprite_properties": {
+                "SPRITE_WIDTH": 48,
+                "SPRITE_HEIGHT": 64,
+                "NUM_SPRITES": 8
+            }
         },
 
         "Dragon": {},

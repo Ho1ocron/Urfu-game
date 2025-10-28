@@ -1,5 +1,7 @@
 import pygame
 from pygame.sprite import Sprite, Group
+from cv2.typing import MatLike
+
 
 from utils.sprite_handler import SpriteHandler
 
@@ -43,17 +45,26 @@ class Knight(Sprite):
         self._hitbox = hitbox
         self._speed = speed
 
-        sprite_handler = SpriteHandler("./assets/knight.png")
-        try:
-            sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], "RGB")
-        except:
-            print(f"{sprite_handler.sprite.shape=}")
-            return
-        
-        self.image = sprite
-        self.original_image = self.image
-        self.rect = self.image.get_rect()
-        self.rect.center = (50, 200)
+        self.sprite_handler = SpriteHandler(
+            char_sprite="Knight",
+            sheet_path_up = "./assets/Adventure/Walk/walk_up", 
+            sheet_path_down = "./assets/Adventure/Walk/walk_down",
+            sheet_path_left = "./assets/Adventure/Walk/walk_left",
+            sheet_path_right = "./assets/Adventure/Walk/walk_right"
+        )
+
+        self.direction = "down"
+        self.frame_index = 0
+        self.animation_speed = 0.15
+
+        # try:
+        #     sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], "RGB")
+        # except:
+        #     print(f"{sprite_handler.sprite.shape=}")
+        #     return
+        self.image = self._get_current_frame()
+        self.rect = self.image.get_rect(center=(50, 200))
+
         self.hitbox_margin = 8
         self.hitbox = pygame.Rect(
             self.rect.x + self.hitbox_margin,
@@ -64,21 +75,50 @@ class Knight(Sprite):
         # self.image = Surface((50, 50))
         # self.image.fill((255, 0, 0))  # bright red square
         # self.rect = self.image.get_rect(center=(320, 240))
-
+    def _get_current_frame(self):
+        """Return current pygame Surface for the knight’s facing direction."""
+        frames = self.sprite_handler.animation[self.direction]
+        if not frames:
+            surf = pygame.Surface((48, 64))
+            surf.fill((255, 0, 0))
+            return surf
+        frame: MatLike = frames[int(self.frame_index) % len(frames)]
+        return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
+    
     def handle_input(self, keys):
+        moving = False
+
         if keys[pygame.K_LEFT]:
             self.rect.x -= self._speed
-            if self.facing_right:  # only flip if currently facing right
-                self.image = pygame.transform.flip(self.original_image, True, False)
-                self.facing_right = False
-        if keys[pygame.K_RIGHT]:
+            self.direction = "left"
+            moving = True
+        elif keys[pygame.K_RIGHT]:
             self.rect.x += self._speed
-            if not self.facing_right:  # only flip if currently facing left
-                self.image = pygame.transform.flip(self.original_image, False, False)
-                self.facing_right = True
-        if keys[pygame.K_UP]:
+            self.direction = "right"
+            moving = True
+        elif keys[pygame.K_UP]:
             self.rect.y -= self._speed
-        if keys[pygame.K_DOWN]:
+            self.direction = "up"
+            moving = True
+        elif keys[pygame.K_DOWN]:
             self.rect.y += self._speed
+            self.direction = "down"
+            moving = True
+        if moving:
+            self.frame_index += self.animation_speed
+        else:
+            self.frame_index = 0  # reset to idle
 
+        # Cycle frames
+        if self.frame_index >= len(self.sprite_handler.animations[self.direction]):
+            self.frame_index = 0
+
+        # Update sprite image
+        self.image = self._get_current_frame()
+
+        # Update hitbox position
+        self.hitbox.topleft = (
+            self.rect.x + self.hitbox_margin,
+            self.rect.y + self.hitbox_margin
+        )
 

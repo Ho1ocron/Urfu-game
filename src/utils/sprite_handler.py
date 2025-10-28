@@ -11,26 +11,80 @@ class SpriteHandler:
     _sprite_scale: float = 2
 
     _scale: float
-    _sheet: MatLike
-    _image: MatLike
+    
+    SPRITE_WIDTH: int
+    SPRITE_HEIGHT: int
+    NUM_SPRITES: int
 
-    def __init__(self, sheet_path: str, scale: float = 1.0):
-        game_properties = GameProperties()
+    _sprite_properties: dict[str: int]
+    #--------Sprites--------#
+    _sprite_sheet: dict[str: MatLike]
+    _image: MatLike
+    #-----------animation frame lists------------#
+    _animation_up = list[MatLike]
+    _animation_down = list[MatLike]
+    _animation_left = list[MatLike]
+    _animation_right = list[MatLike]
+
+
+    def __init__(
+        self, 
+        char_sprite: str, 
+        sheet_path_up: str, 
+        sheet_path_down: str, 
+        sheet_path_left: str, 
+        sheet_path_right: str, 
+        scale: float = 1.0
+    ) -> None:
+        game_properties = GameProperties(char_sprite=char_sprite)
+
+        sprite_properties = game_properties.sprite_properties
+        self.SPRITE_WIDTH: int = sprite_properties["SPRITE_WIDTH"]
+        self.SPRITE_HEIGHT: int = sprite_properties["SPRITE_HEIGHT"]
+        self.NUM_SPRITES: int = sprite_properties["NUM_SPRITES"]
+
         self._scale = game_properties.scale
+        # self._sprite_properties
         self._sprites_bytes = []
 
-        self._sheet = cv2.imread(sheet_path, cv2.IMREAD_UNCHANGED)
-        
-        if self._sheet is None:
-            raise ValueError(f"Failed to load sprite sheet: {sheet_path}")
+        self.sprite_sheets = {
+            "up": cv2.imread(sheet_path_up, cv2.IMREAD_UNCHANGED),
+            "down": cv2.imread(sheet_path_down, cv2.IMREAD_UNCHANGED),
+            "left": cv2.imread(sheet_path_left, cv2.IMREAD_UNCHANGED),
+            "right": cv2.imread(sheet_path_right, cv2.IMREAD_UNCHANGED),
+        }
 
-        # Crop the sprite
-        x = 0
-        y = 0
-        self._image = self._sheet[y:y+64, x:x+64]
-        self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
-        self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
-        self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+        # # Crop the sprite
+        # x = 0
+        # y = 0
+        # self._image = self._sheet_up[y:y+48, x:x+64]
+        # self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+        # self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
+        # self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
+
+    def _extract_sprites(self, sheet, sprite_width, sprite_height, count) -> list[MatLike]:
+        sprites: list[MatLike] = []
+        for i in range(count):
+            x = i * sprite_width
+            y = 0  # assuming one row
+            sprite = sheet[y:y + sprite_height, x:x + sprite_width]
+            sprites.append(sprite)
+        return sprites
+    
+    @property
+    def animation(self) -> dict[str: MatLike]:
+        animation_up = self._extract_sprites(self.sprite_sheets["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_down = self._extract_sprites(self.sprite_sheets["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_left = self._extract_sprites(self.sprite_sheets["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_right = self._extract_sprites(self.sprite_sheets["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+
+        return {
+            "up": animation_up,
+            "down": animation_down,
+            "left": animation_left,
+            "right": animation_right
+        }
+
         
 
     @property
