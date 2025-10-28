@@ -1,7 +1,5 @@
 import pygame
-from pygame.sprite import Sprite, Group
 from cv2.typing import MatLike
-import cv2
 
 from utils.sprite_handler import SpriteHandler
 
@@ -10,7 +8,7 @@ class BaseEntity:
     _hp: int
     _attack: int
     _hitbox: list
-    _sprite: Sprite
+    _sprite: pygame.sprite.Sprite
 
     def __init__(self, hp: int, attack: int, hitbox: list) -> None:
         self._hp = hp
@@ -30,16 +28,16 @@ class BaseEntity:
         self._hp = action
 
 
-class Knight(Sprite):
+class Knight(pygame.sprite.Sprite):
     """Knight is a class for the player"""
     _hp: int
     _attack: int
-    _sprite: Sprite
+    _sprite: pygame.sprite.Sprite
     _speed: int
     _init_pos: tuple[int]
     facing_right: bool = True
 
-    def __init__(self, hp: int, attack: int, group: Group, speed: int, init_pos: tuple[int]) -> None:
+    def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int]) -> None:
         super().__init__(group)
         self._hp = hp
         self._attack = attack
@@ -79,8 +77,6 @@ class Knight(Sprite):
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self.sprite_handler.animation[self.direction]
         frame: MatLike = frames[int(self.frame_index) % len(frames)]
-        frame = cv2.resize(frame, None, fx=2.5, fy=2.5, interpolation=cv2.INTER_NEAREST)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
 
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     

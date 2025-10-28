@@ -1,5 +1,12 @@
-import cv2
 from cv2.typing import MatLike
+from cv2 import (
+    imread,
+    resize,
+    cvtColor,
+    IMREAD_UNCHANGED,
+    INTER_NEAREST,
+    COLOR_BGRA2RGB,
+)
 
 from utils.settings import GameProperties
 
@@ -48,10 +55,10 @@ class SpriteHandler:
         # self._sprite_properties
         self._sprites_bytes = []
         self._sprite_sheets = {
-            "up": cv2.imread(walk_sheet_path_up, cv2.IMREAD_UNCHANGED),
-            "down": cv2.imread(walk_sheet_path_down, cv2.IMREAD_UNCHANGED),
-            "left": cv2.imread(walk_sheet_path_left, cv2.IMREAD_UNCHANGED),
-            "right": cv2.imread(walk_sheet_path_right, cv2.IMREAD_UNCHANGED),
+            "up": imread(walk_sheet_path_up, IMREAD_UNCHANGED),
+            "down": imread(walk_sheet_path_down, IMREAD_UNCHANGED),
+            "left": imread(walk_sheet_path_left, IMREAD_UNCHANGED),
+            "right": imread(walk_sheet_path_right, IMREAD_UNCHANGED),
         }
 
 
@@ -70,6 +77,8 @@ class SpriteHandler:
             y = 0  # assuming one row
             try:
                 sprite = sheet[y:y + sprite_height, x:x + sprite_width]
+                sprite = resize(sprite, None, fx=2.5, fy=2.5, interpolation=INTER_NEAREST)
+                sprite = cvtColor(sprite, COLOR_BGRA2RGB)
             except Exception as sprite_handler:
                 print(f"{sprite_handler=}")
             sprites.append(sprite)
