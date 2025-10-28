@@ -67,7 +67,7 @@ class Knight(pygame.sprite.Sprite):
 
     def _get_current_frame(self) -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
-        frames = self.sprite_handler.animation[self.direction]
+        frames = self.sprite_handler.animation["Walk"][self.direction]
         frame: MatLike = frames[int(self.frame_index)%len(frames)]
         if frame.shape[2] == 4:
             print("Transperant detected")
@@ -119,7 +119,7 @@ class Knight(pygame.sprite.Sprite):
             self.frame_index = 0  # reset to idle
 
         # Cycle frames
-        if self.frame_index >= len(self.sprite_handler.animation[self.direction]):
+        if self.frame_index >= len(self.sprite_handler.animation["Walk"][self.direction]):
             self.frame_index = 0
 
         # Update sprite image

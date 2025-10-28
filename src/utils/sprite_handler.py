@@ -84,10 +84,12 @@ class SpriteHandler:
         animation_left = self._extract_sprites(self._sprite_sheets["Walk"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_right = self._extract_sprites(self._sprite_sheets["Walk"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         return {
-            "up": animation_up,
-            "down": animation_down,
-            "left": animation_left,
-            "right": animation_right
+            "Walk": {
+                "up": animation_up,
+                "down": animation_down,
+                "left": animation_left,
+                "right": animation_right
+            }
         }
 
         
