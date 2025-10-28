@@ -35,18 +35,11 @@ class SpriteHandler:
     _animation_left = list[MatLike]
     _animation_right = list[MatLike]
 
-    def __init__(
-        self, 
-        char_sprite: str, 
-        walk_sheet_path_up: str, 
-        walk_sheet_path_down: str, 
-        walk_sheet_path_left: str, 
-        walk_sheet_path_right: str, 
-        scale: float = 1.0
-    ) -> None:
+    def __init__(self, char_sprite: str, scale: float = 1.0) -> None:
         game_properties = GameProperties(char_sprite=char_sprite)
 
         sprite_properties = game_properties.sprite_properties
+        sprite_sheets_pathes: dict[str: str] = game_properties.char_assets_pathes
 
         self.SPRITE_WIDTH: int = sprite_properties["SPRITE_WIDTH"]
         self.SPRITE_HEIGHT: int = sprite_properties["SPRITE_HEIGHT"]
@@ -56,28 +49,20 @@ class SpriteHandler:
         # self._sprite_properties
         self._sprites_bytes = []
         self._sprite_sheets = {
-            "up": imread(walk_sheet_path_up, IMREAD_UNCHANGED),
-            "down": imread(walk_sheet_path_down, IMREAD_UNCHANGED),
-            "left": imread(walk_sheet_path_left, IMREAD_UNCHANGED),
-            "right": imread(walk_sheet_path_right, IMREAD_UNCHANGED),
+            "up": imread(sprite_sheets_pathes["Walk"]["up"], IMREAD_UNCHANGED),
+            "down": imread(sprite_sheets_pathes["Walk"]["down"], IMREAD_UNCHANGED),
+            "left": imread(sprite_sheets_pathes["Walk"]["left"], IMREAD_UNCHANGED),
+            "right": imread(sprite_sheets_pathes["Walk"]["right"], IMREAD_UNCHANGED),
         }
-
-        # # Crop the sprite
-        # x = 0
-        # y = 0
-        # self._image = self._sheet_up[y:y+48, x:x+64]
-        # self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
-        # self._image = cv2.resize(self._image, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST)
-        # self._image = cv2.cvtColor(self._image, cv2.COLOR_BGR2RGB)
 
     def _extract_sprites(self, sheet, sprite_width, sprite_height, count) -> list[MatLike]:
         sprites: list[MatLike] = []
         for i in range(count):
             x = i * sprite_width
-            y = 0  # assuming one row
+            y = 0  # since we have only one row
             try:
                 sprite = sheet[y:y + sprite_height, x:x + sprite_width]
-                sprite = resize(sprite, None, fx=2.5, fy=2.5, interpolation=INTER_NEAREST)
+                sprite = resize(sprite, None, fx=self._scale, fy=self._scale, interpolation=INTER_NEAREST)
                 sprite = cvtColor(sprite, COLOR_BGRA2RGB)
             except Exception as sprite_handler:
                 print(f"{sprite_handler=}")

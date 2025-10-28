@@ -17,10 +17,11 @@ class GameProperties:
     _height: int
 
     # Sprite
-    _sprite_sheets: dict[str: MatLike] 
-    _char_sprite_sheets_path: dict[str: str]
-    _sprite_properties: dict[str: int]
-    _char_properties: dict[str: int]
+    _sprite_sheets: dict[str: MatLike] | None = None
+    _char_sprite_sheets_path: dict[str: str] | None = None
+    _sprite_properties: dict[str: int] | None = None
+    _char_properties: dict[str: int] | None = None
+    _sprite_scale: float | None = None
 
     # Controls
     _key_bindings: dict[str: str]
@@ -50,6 +51,7 @@ class GameProperties:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
                 self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
                 self._char_sprite_sheets_path = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Frames_path"]
+                self._sprite_scale = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Scale"]
 
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
@@ -57,6 +59,10 @@ class GameProperties:
     @property
     def debug(self) -> bool:
         return self._debug
+    
+    @property
+    def sprite_scale(self) -> float:
+        return self._sprite_scale
 
     @property
     def controls(self) -> dict[str: str]:
@@ -77,7 +83,7 @@ class GameProperties:
     
     @property
     def char_assets_pathes(self) -> dict[str: str]:
-        ...
+        return self._char_sprite_sheets_path
 
     @property
     def screen_size(self) -> tuple[int, int]:

@@ -45,13 +45,7 @@ class Knight(pygame.sprite.Sprite):
         self._attack = attack
         self._speed = speed
 
-        self.sprite_handler = SpriteHandler(
-            char_sprite="Knight",
-            walk_sheet_path_up = "./assets/Adventure/Walk/walk_up.png", 
-            walk_sheet_path_down = "./assets/Adventure/Walk/walk_down.png",
-            walk_sheet_path_left = "./assets/Adventure/Walk/walk_left_down.png",
-            walk_sheet_path_right = "./assets/Adventure/Walk/walk_right_down.png"
-        )
+        self.sprite_handler = SpriteHandler(char_sprite="Knight",)
 
         self.direction = "down"
         self.frame_index = 0
