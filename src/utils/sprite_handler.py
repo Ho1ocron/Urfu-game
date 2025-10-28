@@ -49,10 +49,18 @@ class SpriteHandler:
         # self._sprite_properties
         self._sprites_bytes = []
         self._sprite_sheets = {
-            "up": imread(sprite_sheets_pathes["Walk"]["up"], IMREAD_UNCHANGED),
-            "down": imread(sprite_sheets_pathes["Walk"]["down"], IMREAD_UNCHANGED),
-            "left": imread(sprite_sheets_pathes["Walk"]["left"], IMREAD_UNCHANGED),
-            "right": imread(sprite_sheets_pathes["Walk"]["right"], IMREAD_UNCHANGED),
+            "Walk": {
+                "up": imread(sprite_sheets_pathes["Walk"]["up"], IMREAD_UNCHANGED),
+                "down": imread(sprite_sheets_pathes["Walk"]["down"], IMREAD_UNCHANGED),
+                "left": imread(sprite_sheets_pathes["Walk"]["left"], IMREAD_UNCHANGED),
+                "right": imread(sprite_sheets_pathes["Walk"]["right"], IMREAD_UNCHANGED),
+            },
+            "Idle": {
+                "up": imread(sprite_sheets_pathes["Idle"]["up"], IMREAD_UNCHANGED),
+                "down": imread(sprite_sheets_pathes["Idle"]["down"], IMREAD_UNCHANGED),
+                "left": imread(sprite_sheets_pathes["Idle"]["left"], IMREAD_UNCHANGED),
+                "right": imread(sprite_sheets_pathes["Idle"]["right"], IMREAD_UNCHANGED),
+            }
         }
 
     def _extract_sprites(self, sheet, sprite_width, sprite_height, count) -> list[MatLike]:
