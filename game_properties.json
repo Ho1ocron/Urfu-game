@@ -18,12 +18,17 @@
                 "NUM_SPRITES": 8,
                 "Frames_path": {
                     "Walk": {
-                        "up": "",
-                        "down": "",
-                        "left": "",
-                        "right": ""
+                        "up": "./assets/Adventure/Walk/walk_up.png",
+                        "down": "./assets/Adventure/Walk/walk_down.png",
+                        "left": "./assets/Adventure/Walk/walk_left_down.png",
+                        "right": "./assets/Adventure/Walk/walk_right_down.png"
                     },
-                    "Idle": ""
+                    "Idle": {
+                        "up": "./assets/Adventure/Idle/idle_up.png",
+                        "down": "/assets/Adventure/Idle/idle_down.png",
+                        "left": "/assets/Adventure/Idle/idle_left_up.png",
+                        "right": "/assets/Adventure/Idle/idle_left_down.png"
+                    }
                 } 
             }
         },
