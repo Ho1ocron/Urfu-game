@@ -6,7 +6,11 @@
         "Difficulty": "Normal",
 
         "Controls": {
-            "Attack": "Key_Enter"
+            "Attack": "Key_Enter",
+            "Walk_up": "",
+            "Walk_down": "",
+            "Walk_right": "",
+            "Walk_left": ""
         }
     },
 
