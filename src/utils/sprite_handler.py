@@ -93,8 +93,6 @@ class SpriteHandler:
         animation_idle_down = self._extract_sprites(self._sprite_sheets["Idle"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_idle_left = self._extract_sprites(self._sprite_sheets["Idle"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_idle_right = self._extract_sprites(self._sprite_sheets["Idle"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        print("sprite handler animation func is being called")
-        print(animation_walk_up)
         return {
             "Walk": {
                 "up": animation_walk_up,

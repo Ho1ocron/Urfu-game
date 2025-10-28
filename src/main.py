@@ -34,7 +34,6 @@ class Game(pygame.sprite.Group):
         
 
     def run(self) -> None:
-        
         keys = pygame.key.get_pressed()
         try: 
             self._player.handle_input(keys)
@@ -42,7 +41,7 @@ class Game(pygame.sprite.Group):
             self.player_group.draw(self._screen)
             self._player.rect.clamp_ip(self._screen_rect)
 
-            if self._game_properties.debug == True:
+            if self._game_properties.debug == True or keys[pygame.K_F5]:
                 self._player.draw_hitbox(self._screen)
         except:
             return

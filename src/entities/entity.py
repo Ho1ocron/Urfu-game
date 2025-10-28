@@ -53,7 +53,6 @@ class Knight(pygame.sprite.Sprite):
         self.frame_index = 0
         self.animation_speed = 0.4
         self._animation = self.sprite_handler.animation
-        print(f"self._animation being called")
 
         self.game_props = GameProperties()
         self._controls = self.game_props.controls
@@ -72,12 +71,7 @@ class Knight(pygame.sprite.Sprite):
     def _get_current_frame(self) -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self._animation["Walk"][self.direction]
-        # self.sprite_handler.animation Вызывается постоянно. Переделать
-        try:
-            frame: MatLike = frames[int(self.frame_index)%len(frames)]
-        except:
-            print(self._animation)
-        print(frame.shape)
+        frame: MatLike = frames[int(self.frame_index)%len(frames)]
         if frame.shape[2] == 4:
             # Drop alpha for color check
             rgb = frame[:, :, :3]
@@ -92,9 +86,7 @@ class Knight(pygame.sprite.Sprite):
             y, x = np.where(mask)
             cropped = frame[np.min(y):np.max(y)+1, np.min(x):np.max(x)+1]
         else:
-            print("Completely black tile detected")
             cropped = frame  
-        print(cropped.shape)
         return pygame.image.frombuffer(cropped.tobytes(), cropped.shape[1::-1], "RGBA")
     
     def update_hitbox(self):
