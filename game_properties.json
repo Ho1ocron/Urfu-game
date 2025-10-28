@@ -4,6 +4,7 @@
         "Scale": 2,
         "Background_color": [0, 0, 0],
         "Difficulty": "Normal",
+        "DEBUG": true,
 
         "Controls": {
             "Attack": "Key_Enter",

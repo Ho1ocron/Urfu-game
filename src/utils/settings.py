@@ -17,6 +17,7 @@ class GameProperties:
 
     # Sprite
     _sprite_sheets: dict[str: MatLike] 
+    _char_sprite_sheets_path: dict[str: str]
     _sprite_properties: dict[str: int]
     _char_properties: dict[str: int]
 
@@ -43,6 +44,7 @@ class GameProperties:
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
                 self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
+                self._char_sprite_sheets_path = self._settings["EntityProperties"][char_sprite]["Frames_path"]
 
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
@@ -66,6 +68,9 @@ class GameProperties:
     @property
     def char_properties(self) -> dict[str: int]:
         return self._char_properties
+    
+    @property
+    def _char_assets_pathes(self) -> dict[str: str]
 
     @property
     def screen_size(self) -> tuple[int, int]:
