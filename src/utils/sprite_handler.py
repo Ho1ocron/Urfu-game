@@ -38,5 +38,3 @@ class SpriteHandler:
         return self._image
         # sprite = pygame.image.frombuffer(resized.tobytes(), resized.shape[1::-1], 'RGB')
 
-
-s = SpriteHandler(sheet_path="./assets/knight.png")

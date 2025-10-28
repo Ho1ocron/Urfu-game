@@ -11,7 +11,9 @@
     },
 
     "EntityProperties": {
-        "Knight": {},
+        "Knight": {
+            "is_sprite_sheet": false
+        },
 
         "Dragon": {},
 

@@ -24,6 +24,7 @@ class GameProperties:
             # Получаем разрешение экрана
             res: str = self._settings["GameProperties"]["ScreenSize"]
             self._scale = self._settings["GameProperties"]["Scale"]
+            self._palyer_is_sprite_sheet: bool = self._settings["EntityProperties"]["Knight"]["is_sprite_sheet"]
             self._screen_size = tuple(map(int, res.split("*")))
 
             self._width, self._height = self._screen_size
