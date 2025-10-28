@@ -23,7 +23,7 @@ class Game(pygame.sprite.Group):
         self._screen = pygame.display.set_mode(self.__screen_size)
 
         self.player_group = pygame.sprite.Group()
-        self._player = Knight(hp=10, attack=10, group=self.player_group, speed=10, init_pos=(50, 100))
+        self._player = Knight(group=self.player_group, init_pos=(50, 100))
         # self._knight = Knight(hp=10, attack=10, group=self.player_group, speed=10, init_pos=(200, 300))
 
         self._screen.fill((255, 255, 255))

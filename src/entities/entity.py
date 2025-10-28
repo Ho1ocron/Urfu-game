@@ -31,21 +31,18 @@ class BaseEntity:
 
 class Knight(pygame.sprite.Sprite):
     """Knight is a class for the player"""
-    _hp: int
-    _attack: int
+    _hp: int = 1
+    _attack: int = 1
     _sprite: pygame.sprite.Sprite
-    _speed: int
+    _speed: int = 1
     _init_pos: tuple[int]
     facing_right: bool = True
     _controls: dict[str: int]
     _animation: dict[str: MatLike]
 
-    def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int], x: bool = False) -> None:
+    def __init__(self, group: pygame.sprite.Group, init_pos: tuple[int], x: bool = False) -> None:
         super().__init__(group)
         self.x = x
-        self._hp = hp
-        self._attack = attack
-        self._speed = speed
 
         self.sprite_handler = SpriteHandler(char_sprite="Knight",)
 
@@ -54,8 +51,14 @@ class Knight(pygame.sprite.Sprite):
         self.animation_speed = 0.4
         self._animation = self.sprite_handler.animation
 
-        self.game_props = GameProperties()
+        self.game_props = GameProperties("Knight")
         self._controls = self.game_props.controls
+    # try: 
+        self._hp = self.game_props.char_properties["HP"]
+        self._attack = self.game_props.char_properties["Attack"]
+        self._speed = self.game_props.char_properties["Speed"]
+        # except Exception as e:
+        #     print(e)
 
         self.image = self._get_current_frame()
         self.rect = self.image.get_rect(center=init_pos)

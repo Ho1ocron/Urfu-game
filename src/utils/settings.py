@@ -28,6 +28,9 @@ class GameProperties:
 
     _debug: bool
 
+    # Entity props
+    _entity_props: int
+
     # Knight (player) properties
 
     # Dragon properties
@@ -49,12 +52,15 @@ class GameProperties:
             # Получаем спрайт
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
-                self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
                 self._char_sprite_sheets_path = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Frames_path"]
-                self._sprite_scale = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Scale"]
+                self._sprite_scale = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Frames_path"]
+
+                # Получаем свойства игрока
+                self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
 
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
+
     
     @property
     def debug(self) -> bool:
