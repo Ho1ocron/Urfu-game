@@ -27,6 +27,9 @@ class Game(pygame.sprite.Group):
 
         self._screen.fill((0, 0, 0))
         self.player_group.draw(self._screen)
+
+        self._screen_rect = pygame.Rect((0,0), self.__screen_size)
+
         
 
     def run(self) -> None:
@@ -38,6 +41,7 @@ class Game(pygame.sprite.Group):
             # print(self._player.rect.x)
             self._screen.fill(self.BLACK)  # clear previous frame
             self.player_group.draw(self._screen)
+            self._player.rect.clamp_ip(self._screen_rect)
         except:
             return
         for event in pygame.event.get():
