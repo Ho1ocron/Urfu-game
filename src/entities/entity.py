@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite, Group
 from cv2.typing import MatLike
-
+import cv2
 
 from utils.sprite_handler import SpriteHandler
 
@@ -47,10 +47,10 @@ class Knight(Sprite):
 
         self.sprite_handler = SpriteHandler(
             char_sprite="Knight",
-            sheet_path_up = "./assets/Adventure/Walk/walk_up", 
-            sheet_path_down = "./assets/Adventure/Walk/walk_down",
-            sheet_path_left = "./assets/Adventure/Walk/walk_left",
-            sheet_path_right = "./assets/Adventure/Walk/walk_right"
+            sheet_path_up = "./assets/Adventure/Walk/walk_up.png", 
+            sheet_path_down = "./assets/Adventure/Walk/walk_down.png",
+            sheet_path_left = "./assets/Adventure/Walk/walk_left_down.png",
+            sheet_path_right = "./assets/Adventure/Walk/walk_right_down.png"
         )
 
         self.direction = "down"
@@ -83,6 +83,7 @@ class Knight(Sprite):
             surf.fill((255, 0, 0))
             return surf
         frame: MatLike = frames[int(self.frame_index) % len(frames)]
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
     
     def handle_input(self, keys):
@@ -110,7 +111,7 @@ class Knight(Sprite):
             self.frame_index = 0  # reset to idle
 
         # Cycle frames
-        if self.frame_index >= len(self.sprite_handler.animations[self.direction]):
+        if self.frame_index >= len(self.sprite_handler.animation[self.direction]):
             self.frame_index = 0
 
         # Update sprite image

@@ -29,7 +29,6 @@ class GameProperties:
             if char_sprite is not None:
                 self._player_is_sprite_sheet: bool = self._settings["EntityProperties"]["Knight"]
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
-                print(self._sprite_properties)
             self._screen_size = tuple(map(int, res.split("*")))
 
             self._width, self._height = self._screen_size

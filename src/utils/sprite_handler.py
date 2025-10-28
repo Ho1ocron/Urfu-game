@@ -18,7 +18,7 @@ class SpriteHandler:
 
     _sprite_properties: dict[str: int]
     #--------Sprites--------#
-    _sprite_sheet: dict[str: MatLike]
+    _sprite_sheets: dict[str: MatLike]
     _image: MatLike
     #-----------animation frame lists------------#
     _animation_up = list[MatLike]
@@ -46,13 +46,13 @@ class SpriteHandler:
         self._scale = game_properties.scale
         # self._sprite_properties
         self._sprites_bytes = []
-
-        self.sprite_sheets = {
+        self._sprite_sheets = {
             "up": cv2.imread(sheet_path_up, cv2.IMREAD_UNCHANGED),
             "down": cv2.imread(sheet_path_down, cv2.IMREAD_UNCHANGED),
             "left": cv2.imread(sheet_path_left, cv2.IMREAD_UNCHANGED),
             "right": cv2.imread(sheet_path_right, cv2.IMREAD_UNCHANGED),
         }
+
 
         # # Crop the sprite
         # x = 0
@@ -67,17 +67,19 @@ class SpriteHandler:
         for i in range(count):
             x = i * sprite_width
             y = 0  # assuming one row
-            sprite = sheet[y:y + sprite_height, x:x + sprite_width]
+            try:
+                sprite = sheet[y:y + sprite_height, x:x + sprite_width]
+            except Exception as sprite_handler:
+                print(f"{sprite_handler=}")
             sprites.append(sprite)
         return sprites
     
     @property
     def animation(self) -> dict[str: MatLike]:
-        animation_up = self._extract_sprites(self.sprite_sheets["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_down = self._extract_sprites(self.sprite_sheets["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_left = self._extract_sprites(self.sprite_sheets["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-        animation_right = self._extract_sprites(self.sprite_sheets["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
-
+        animation_up = self._extract_sprites(self._sprite_sheets["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_down = self._extract_sprites(self._sprite_sheets["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_left = self._extract_sprites(self._sprite_sheets["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
+        animation_right = self._extract_sprites(self._sprite_sheets["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         return {
             "up": animation_up,
             "down": animation_down,
