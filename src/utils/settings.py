@@ -13,6 +13,7 @@ class GameProperties:
     _height: int
     _sprite_sheets: dict[str: MatLike] 
     _sprite_properties: dict[str: int]
+    _char_properties: dict[str: int]
 
     # Knight (player) properties
 
@@ -33,18 +34,23 @@ class GameProperties:
             # Получаем спрайт
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
+                self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
             
 
     @property
-    def game_scale(self):
+    def game_scale(self) -> float:
         return self._game_scale
     
     @property
-    def sprite_properties(self):
+    def sprite_properties(self) -> dict[str: int]:
         return self._sprite_properties
+    
+    @property
+    def char_properties(self) -> dict[str: int]:
+        return self._char_properties
 
     @property
-    def screen_size(self):
+    def screen_size(self) -> tuple[int, int]:
         """Returns the scaled screen size as integers."""
         self._screen_size = int(self._width * self._game_scale), int(self._height * self._game_scale)
         return self._screen_size

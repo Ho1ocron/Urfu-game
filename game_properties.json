@@ -16,9 +16,12 @@
 
     "EntityProperties": {
         "Knight": {
-            "Attack": 10,
-            "HP": 10,
-            "Speed": 10,
+            "Ingame_Properties": {
+                "Attack": 10,
+                "HP": 10,
+                "Speed": 10
+            },
+
             "Sprite_properties": {
                 "SPRITE_WIDTH": 48,
                 "SPRITE_HEIGHT": 64,
