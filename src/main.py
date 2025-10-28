@@ -25,7 +25,7 @@ class Game(pygame.sprite.Group):
         self.player_group = pygame.sprite.Group()
         self._player = Knight(hp=10, attack=10, group=self.player_group, speed=10, init_pos=(50, 100))
 
-        self._screen.fill((0, 0, 0))
+        self._screen.fill((255, 255, 255))
         self.player_group.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
@@ -39,9 +39,10 @@ class Game(pygame.sprite.Group):
             self._player.handle_input(keys)
             self.player_group.update()
             # print(self._player.rect.x)
-            self._screen.fill(self.BLACK)  # clear previous frame
+            self._screen.fill((255, 255, 255))  # clear previous frame
             self.player_group.draw(self._screen)
             self._player.rect.clamp_ip(self._screen_rect)
+            self._player.draw_hitbox(self._screen)
         except:
             return
         for event in pygame.event.get():

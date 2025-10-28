@@ -1,4 +1,5 @@
 import json
+import pygame
 
 from cv2.typing import MatLike
 
@@ -44,18 +45,15 @@ class GameProperties:
             if char_sprite is not None:
                 self._sprite_properties = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]
                 self._char_properties = self._settings["EntityProperties"][char_sprite]["Ingame_Properties"]
-                self._char_sprite_sheets_path = self._settings["EntityProperties"][char_sprite]["Frames_path"]
+                self._char_sprite_sheets_path = self._settings["EntityProperties"][char_sprite]["Sprite_properties"]["Frames_path"]
 
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
             
     @property
-    def serialize_key_bindings(self) -> dict[str: str]:
-        new_key_bindings: dict[str: str] = {}
-        for key_name, key_bind in self._key_bindings.items():
-            key_bind = f"pygame.{key_bind}"
-            new_key_bindings.update({key_name: key_bind})
-        return new_key_bindings
+    def controls(self) -> dict[str: str]:
+        controls = {action: getattr(pygame, key_name) for action, key_name in self._key_bindings.items()}
+        return controls
 
     @property
     def game_scale(self) -> float:

@@ -60,7 +60,6 @@ class SpriteHandler:
             "left": imread(walk_sheet_path_left, IMREAD_UNCHANGED),
             "right": imread(walk_sheet_path_right, IMREAD_UNCHANGED),
         }
-        print(game_properties.serialize_key_bindings)
 
         # # Crop the sprite
         # x = 0

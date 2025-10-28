@@ -1,7 +1,8 @@
 import pygame
+import numpy as np
 from cv2.typing import MatLike
 
-from utils.sprite_handler import SpriteHandler
+from utils import SpriteHandler, GameProperties
 
 
 class BaseEntity:
@@ -36,6 +37,7 @@ class Knight(pygame.sprite.Sprite):
     _speed: int
     _init_pos: tuple[int]
     facing_right: bool = True
+    _controls: dict[str: int]
 
     def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int]) -> None:
         super().__init__(group)
@@ -55,47 +57,65 @@ class Knight(pygame.sprite.Sprite):
         self.frame_index = 0
         self.animation_speed = 0.4
 
-        # try:
-        #     sprite = pygame.image.frombuffer(sprite_handler.sprite.tobytes(), sprite_handler.sprite.shape[1::-1], "RGB")
-        # except:
-        #     print(f"{sprite_handler.sprite.shape=}")
-        #     return
+        self.game_props = GameProperties()
+        self._controls = self.game_props.controls
+
         self.image = self._get_current_frame()
         self.rect = self.image.get_rect(center=init_pos)
 
-        self.hitbox_margin = 8
+        self.hitbox_margin = 2
+        self.hitbox = pygame.Rect(
+            self.rect.x + self.hitbox_margin,
+            self.rect.y + self.hitbox_margin,
+            self.rect.width - self.hitbox_margin,
+            self.rect.height - self.hitbox_margin,
+        )
+
+    def _get_current_frame(self) -> pygame.Surface:
+        """Return current pygame Surface for the knight’s facing direction."""
+        frames = self.sprite_handler.animation[self.direction]
+        frame: MatLike = frames[int(self.frame_index)%len(frames)]
+        if frame.shape[2] == 4:
+            print("Transperant detected")
+            alpha = frame[:, :, 3]
+            y, x = np.where(alpha > 0)
+            cropped = frame[np.min(y):np.max(y)+1, np.min(x):np.max(x)+1]
+        else:
+            print("Transperant not detected")
+            print(frame.shape)
+            cropped = frame  # fallback
+
+        return pygame.image.frombuffer(cropped.tobytes(), frame.shape[1::-1], "RGB")
+    
+    def update_hitbox(self):
+        """Recalculate hitbox position and size."""
         self.hitbox = pygame.Rect(
             self.rect.x + self.hitbox_margin,
             self.rect.y + self.hitbox_margin,
             self.rect.width - self.hitbox_margin * 2,
             self.rect.height - self.hitbox_margin * 2
         )
-        # self.image = Surface((50, 50))
-        # self.image.fill((255, 0, 0))  # bright red square
-        # self.rect = self.image.get_rect(center=(320, 240))
-    def _get_current_frame(self) -> pygame.Surface:
-        """Return current pygame Surface for the knight’s facing direction."""
-        frames = self.sprite_handler.animation[self.direction]
-        frame: MatLike = frames[int(self.frame_index)%len(frames)]
-
-        return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
+    
+    def draw_hitbox(self, surface: pygame.Surface) -> None:
+        """Draw the hitbox for debugging."""
+        pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
     
     def handle_input(self, keys) -> None:
         moving = False
 
-        if keys[pygame.K_LEFT]:
+        if keys[self._controls["Walk_left"]]:
             self.rect.x -= self._speed
             self.direction = "left"
             moving = True
-        elif keys[pygame.K_RIGHT]:
+        elif keys[self._controls["Walk_right"]]:
             self.rect.x += self._speed
             self.direction = "right"
             moving = True
-        elif keys[pygame.K_UP]:
+        elif keys[self._controls["Walk_up"]]:
             self.rect.y -= self._speed
             self.direction = "up"
             moving = True
-        elif keys[pygame.K_DOWN]:
+        elif keys[self._controls["Walk_down"]]:
             self.rect.y += self._speed
             self.direction = "down"
             moving = True
@@ -112,8 +132,9 @@ class Knight(pygame.sprite.Sprite):
         self.image = self._get_current_frame()
 
         # Update hitbox position
-        self.hitbox.topleft = (
-            self.rect.x + self.hitbox_margin,
-            self.rect.y + self.hitbox_margin
-        )
+        # self.hitbox.topleft = (
+        #     self.rect.x + self.hitbox_margin,
+        #     self.rect.y + self.hitbox_margin
+        # )
+        self.update_hitbox()
 

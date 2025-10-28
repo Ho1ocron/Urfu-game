@@ -7,7 +7,7 @@
         "DEBUG": true,
 
         "Controls": {
-            "Attack": "Key_Enter",
+            "Attack": "K_UP",
             "Walk_up": "K_UP",
             "Walk_down": "K_DOWN",
             "Walk_right": "K_RIGHT",
