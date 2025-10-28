@@ -11,6 +11,7 @@ from cv2 import (
 
 from utils.settings import GameProperties
 
+
 class SpriteHandler:
     _sprite_size: int = 192
     _total_sprites: int = 8
@@ -81,7 +82,7 @@ class SpriteHandler:
         return sprites
     
     @property
-    def animation(self) -> dict[str: MatLike]:
+    def animation(self) -> dict[str: list[MatLike]]:
         animation_walk_up = self._extract_sprites(self._sprite_sheets["Walk"]["up"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_walk_down = self._extract_sprites(self._sprite_sheets["Walk"]["down"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_walk_left = self._extract_sprites(self._sprite_sheets["Walk"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
@@ -107,10 +108,6 @@ class SpriteHandler:
             }
         }
 
-        
-
     @property
     def sprite(self):
         return self._image
-        # sprite = pygame.image.frombuffer(resized.tobytes(), resized.shape[1::-1], 'RGB')
-
