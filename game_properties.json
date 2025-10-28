@@ -1,6 +1,6 @@
 {
     "GameProperties": {
-        "ScreenSize": "310*369",
+        "ScreenSize": "310*375",
         "Scale": 2,
         "Background_color": [0, 0, 0],
         "Difficulty": "Normal",
