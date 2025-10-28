@@ -20,6 +20,7 @@
                 "SPRITE_WIDTH": 48,
                 "SPRITE_HEIGHT": 64,
                 "NUM_SPRITES": 8,
+
                 "Frames_path": {
                     "Walk": {
                         "up": "./assets/Adventure/Walk/walk_up.png",
@@ -27,6 +28,7 @@
                         "left": "./assets/Adventure/Walk/walk_left_down.png",
                         "right": "./assets/Adventure/Walk/walk_right_down.png"
                     },
+                    
                     "Idle": {
                         "up": "./assets/Adventure/Idle/idle_up.png",
                         "down": "/assets/Adventure/Idle/idle_down.png",
