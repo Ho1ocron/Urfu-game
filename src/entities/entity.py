@@ -31,6 +31,7 @@ class BaseEntity:
 
 
 class Knight(Sprite):
+    """Knight is a class for the player"""
     _hp: int
     _attack: int
     _hitbox: list
