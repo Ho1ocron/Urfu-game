@@ -24,6 +24,7 @@ class Game(pygame.sprite.Group):
 
         self.player_group = pygame.sprite.Group()
         self._player = Knight(hp=10, attack=10, group=self.player_group, speed=10, init_pos=(50, 100))
+        # self._knight = Knight(hp=10, attack=10, group=self.player_group, speed=10, init_pos=(200, 300))
 
         self._screen.fill((255, 255, 255))
         self.player_group.draw(self._screen)
@@ -37,8 +38,8 @@ class Game(pygame.sprite.Group):
         keys = pygame.key.get_pressed()
         try: 
             self._player.handle_input(keys)
-            self._screen.fill((255, 255, 255))  # clear previous frame
-            # self.player_group.draw(self._screen)
+            self._screen.fill(self.BLACK)  # clear previous frame
+            self.player_group.draw(self._screen)
             self._player.rect.clamp_ip(self._screen_rect)
 
             if self._game_properties.debug == True:

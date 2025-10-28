@@ -40,8 +40,9 @@ class Knight(pygame.sprite.Sprite):
     _controls: dict[str: int]
     _animation: dict[str: MatLike]
 
-    def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int]) -> None:
+    def __init__(self, hp: int, attack: int, group: pygame.sprite.Group, speed: int, init_pos: tuple[int], x: bool = False) -> None:
         super().__init__(group)
+        self.x = x
         self._hp = hp
         self._attack = attack
         self._speed = speed
@@ -60,7 +61,7 @@ class Knight(pygame.sprite.Sprite):
         self.image = self._get_current_frame()
         self.rect = self.image.get_rect(center=init_pos)
 
-        self.hitbox_margin = 0
+        self.hitbox_margin = 42
         self.hitbox = pygame.Rect(
             self.rect.x + self.hitbox_margin,
             self.rect.y + self.hitbox_margin,
@@ -72,16 +73,29 @@ class Knight(pygame.sprite.Sprite):
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self._animation["Walk"][self.direction]
         # self.sprite_handler.animation Вызывается постоянно. Переделать
-        frame: MatLike = frames[int(self.frame_index)%len(frames)]
+        try:
+            frame: MatLike = frames[int(self.frame_index)%len(frames)]
+        except:
+            print(self._animation)
+        print(frame.shape)
         if frame.shape[2] == 4:
-            print("Transperant detected")
-            alpha = frame[:, :, 3]
-            y, x = np.where(alpha > 0)
+            # Drop alpha for color check
+            rgb = frame[:, :, :3]
+        else:
+            rgb = frame
+
+        # Create mask where pixel is NOT black
+        mask = np.any(rgb > 0, axis=2)
+
+        # Find bounding box of non-black area
+        if np.any(mask) == self.x:
+            y, x = np.where(mask)
             cropped = frame[np.min(y):np.max(y)+1, np.min(x):np.max(x)+1]
         else:
-            cropped = frame  # fallback
-
-        return pygame.image.frombuffer(cropped.tobytes(), frame.shape[1::-1], "RGB")
+            print("Completely black tile detected")
+            cropped = frame  
+        print(cropped.shape)
+        return pygame.image.frombuffer(cropped.tobytes(), cropped.shape[1::-1], "RGBA")
     
     def update_hitbox(self):
         """Recalculate hitbox position and size."""

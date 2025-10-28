@@ -1,4 +1,5 @@
 from datetime import datetime
+import numpy as np
 from cv2.typing import MatLike
 from cv2 import (
     imread,
@@ -6,7 +7,7 @@ from cv2 import (
     cvtColor,
     IMREAD_UNCHANGED,
     INTER_NEAREST,
-    COLOR_BGRA2RGB,
+    COLOR_BGRA2RGBA,
 )
 
 from utils.settings import GameProperties
@@ -73,12 +74,12 @@ class SpriteHandler:
             try:
                 sprite = sheet[y:y + sprite_height, x:x + sprite_width]
                 sprite = resize(sprite, None, fx=self._scale, fy=self._scale, interpolation=INTER_NEAREST)
-                sprite = cvtColor(sprite, COLOR_BGRA2RGB)
+                sprite = cvtColor(sprite, COLOR_BGRA2RGBA)
                 sprites.append(sprite)
             except Exception as sprite_handler:
                 time = datetime.now()
                 print(f"{sprite_handler=}, time: {time.strftime("%M:%S")}")
-        
+    
         return sprites
     
     @property
@@ -93,6 +94,7 @@ class SpriteHandler:
         animation_idle_left = self._extract_sprites(self._sprite_sheets["Idle"]["left"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         animation_idle_right = self._extract_sprites(self._sprite_sheets["Idle"]["right"], self.SPRITE_WIDTH, self.SPRITE_HEIGHT, self.NUM_SPRITES)
         print("sprite handler animation func is being called")
+        print(animation_walk_up)
         return {
             "Walk": {
                 "up": animation_walk_up,
