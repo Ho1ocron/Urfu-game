@@ -1,1 +1,1 @@
-from entities.entity import BaseEntity, Knight, EnemyKnight
+from entities.entity import BaseEntity, Knight, EnemyKnight, GroupManager

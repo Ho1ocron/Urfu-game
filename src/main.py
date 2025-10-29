@@ -4,7 +4,7 @@ import pygame
 
 
 from utils import GameProperties
-from entities import Knight, EnemyKnight
+from entities import Knight, EnemyKnight, GroupManager
 
 
 class Game(pygame.sprite.Group):
@@ -24,15 +24,16 @@ class Game(pygame.sprite.Group):
         pygame.init()
         self._screen = pygame.display.set_mode(self.__screen_size)
 
-        self.player_group = pygame.sprite.Group()
-        self.enemy_group = pygame.sprite.Group()
+        # self.player_group = pygame.sprite.Group()
+        # self.enemy_group = pygame.sprite.Group()
 
-        self._player = Knight(group=self.player_group, init_pos=(310-64//2, 375))
-        self._enemy = EnemyKnight(group=self.player_group, init_pos=(100, 100))
+        self._player = Knight(init_pos=(310-64//2, 375))
+        self._enemy = EnemyKnight(init_pos=(100, 100))
 
         self._screen.fill((255, 255, 255))
-        self.player_group.draw(self._screen)
-        self.enemy_group.draw(self._screen)
+        self.group = GroupManager()
+        self.group.player_group.draw(self._screen)
+        self.group.enemy_group.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
 
@@ -48,11 +49,9 @@ class Game(pygame.sprite.Group):
         self._screen.fill(self.BLACK)  # clear previous frame
         self._screen.blit(self._player.image, self._player.rect)
         self._screen.blit(self._enemy.image, self._enemy.rect)
-        # solve the issue with drawing the player
         self._player.rect.clamp_ip(self._screen_rect)
-        collisions = pygame.sprite.spritecollide(self._player, self.enemy_group, False, collided=self.hitbox_collision)
-        for enemy in collisions:
-            print("Player hit:", enemy)
+        if pygame.sprite.spritecollide(self._player, self.group.enemy_group, False, collided=self.hitbox_collision):
+            print(f"collision:")
 
         if keys[pygame.K_0]:
             if self.key_pressed == False:

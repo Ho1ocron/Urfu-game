@@ -3,6 +3,32 @@ import math
 from cv2.typing import MatLike
 from utils import SpriteHandler, GameProperties
 
+import pygame
+
+
+class GroupManager:
+    """Centralized manager for all sprite groups."""
+    player_group = pygame.sprite.Group()
+    enemy_group = pygame.sprite.Group()
+    all_sprites = pygame.sprite.Group()  # optional convenience group
+
+    @classmethod
+    def add_player(cls, player: pygame.sprite.Sprite) -> None:
+        cls.player_group.add(player)
+        cls.all_sprites.add(player)
+
+    @classmethod
+    def add_enemy(cls, enemy: pygame.sprite.Sprite) -> None:
+        cls.enemy_group.add(enemy)
+        cls.all_sprites.add(enemy)
+
+    @classmethod
+    def clear_all(cls) -> None:
+        """Clear all sprite groups."""
+        cls.player_group.empty()
+        cls.enemy_group.empty()
+        cls.all_sprites.empty()
+        
 
 class BaseEntity(pygame.sprite.Sprite):
     """Base class for all entities in the game (player, enemies, etc.)"""
@@ -75,9 +101,10 @@ class Knight(BaseEntity):
 
     facing_right: bool = True
 
-    def __init__(self, group: pygame.sprite.Group, init_pos: tuple[int], x: bool = False) -> None:
+    def __init__(self, init_pos: tuple[int], x: bool = False) -> None:
         # Initialize sprite
-        pygame.sprite.Sprite.__init__(self, group)
+        pygame.sprite.Sprite.__init__(self)
+        GroupManager.add_player(self)
 
 
         # Initialize handler and properties
@@ -174,8 +201,9 @@ class Knight(BaseEntity):
 class EnemyKnight(BaseEntity):
     """Generic enemy class."""
 
-    def __init__(self, group: pygame.sprite.Group, init_pos: tuple[int], sprite_name: str = "Knight"):
-        pygame.sprite.Sprite.__init__(self, group)
+    def __init__(self, init_pos: tuple[int], sprite_name: str = "Knight"):
+        pygame.sprite.Sprite.__init__(self)
+        GroupManager.add_enemy(self)
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
         self.game_props = GameProperties(sprite_name)
 
