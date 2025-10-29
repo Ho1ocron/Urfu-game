@@ -2,7 +2,7 @@ import pygame
 import math
 from cv2.typing import MatLike
 
-from entities.knight import Knight
+from entities.player import Knight
 from utils import SpriteHandler, GameProperties
 from entities.entity import BaseEntity
 from entities.group_manager import GroupManager
@@ -21,7 +21,7 @@ class EnemyKnight(BaseEntity):
         attack = self.game_props.char_properties["Attack"]
         speed = self.game_props.char_properties["Speed"]
 
-        dummy_hitbox = pygame.Rect(0, 0, 64, 64)
+        dummy_hitbox = pygame.Rect(0, 0, 128, 128)
         BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
 
         self._animation = self.sprite_handler.animation

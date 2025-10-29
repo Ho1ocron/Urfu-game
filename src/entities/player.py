@@ -17,7 +17,6 @@ class Knight(BaseEntity):
         pygame.sprite.Sprite.__init__(self)
         GroupManager.add_player(self)
 
-
         # Initialize handler and properties
         self.sprite_handler = SpriteHandler(char_sprite="Knight")
         self.game_props = GameProperties("Knight")
@@ -30,7 +29,7 @@ class Knight(BaseEntity):
         self._animation = self.sprite_handler.animation
 
         # Temporary dummy hitbox for parent init
-        dummy_hitbox = pygame.Rect(0, 0, 64, 64)
+        dummy_hitbox = pygame.Rect(0, 0, 32, 32)
 
         # Initialize BaseEntity
         BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
@@ -46,7 +45,6 @@ class Knight(BaseEntity):
         # Hitbox setup
         self.hitbox_margin = 42
         self.update_hitbox()
-
         self.x = x
 
     def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
