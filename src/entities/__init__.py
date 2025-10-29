@@ -1,1 +1,1 @@
-from entities.entity import BaseEntity, Knight
+from entities.entity import BaseEntity, Knight, EnemyKnight
