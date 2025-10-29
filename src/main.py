@@ -32,8 +32,9 @@ class Game(pygame.sprite.Group):
 
         self._screen.fill((255, 255, 255))
         self.group = GroupManager()
-        self.group.player_group.draw(self._screen)
-        self.group.enemy_group.draw(self._screen)
+        GroupManager.all_sprites.draw(self._screen)
+        # self.group.player_group.draw(self._screen)
+        # self.group.enemy_group.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
 
@@ -50,8 +51,7 @@ class Game(pygame.sprite.Group):
         self._screen.blit(self._player.image, self._player.rect)
         self._screen.blit(self._enemy.image, self._enemy.rect)
         self._player.rect.clamp_ip(self._screen_rect)
-        if pygame.sprite.spritecollide(self._player, self.group.enemy_group, False, collided=self.hitbox_collision):
-            print(f"collision:")
+        GroupManager.check_collisions()
 
         if keys[pygame.K_0]:
             if self.key_pressed == False:
@@ -61,7 +61,7 @@ class Game(pygame.sprite.Group):
                 self.draw_hitbox = False
                 self.key_pressed = False
 
-        if self.draw_hitbox == True:
+        if True:
             self._player.draw_hitbox(self._screen)
             self._enemy.draw_hitbox(self._screen)
 

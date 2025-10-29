@@ -28,6 +28,20 @@ class GroupManager:
         cls.player_group.empty()
         cls.enemy_group.empty()
         cls.all_sprites.empty()
+
+    @classmethod
+    def check_collisions(cls):
+        """Detect and handle collisions between player and enemies."""
+        for player in cls.player_group:
+            # Detect collisions between this player and all enemies
+            collided_enemies = pygame.sprite.spritecollide(
+                player, cls.enemy_group, False, pygame.sprite.collide_mask
+            )
+
+            for enemy in collided_enemies:
+                if player != enemy:
+                    player.on_collision(enemy)
+                    enemy.on_collision(player)
         
 
 class BaseEntity(pygame.sprite.Sprite):
@@ -36,9 +50,10 @@ class BaseEntity(pygame.sprite.Sprite):
     _attack: int
     _speed: int
     _hitbox: pygame.Rect
-    _sprite: pygame.Surface
+    _sprite: pygame.sprite.Sprite
     _animation: dict[str, MatLike]
     _controls: dict[str, int]
+    _rect: pygame.Rect
 
     def __init__(self, hp: int, attack: int, speed: int, hitbox: pygame.Rect) -> None:
         super().__init__()
@@ -94,6 +109,11 @@ class BaseEntity(pygame.sprite.Sprite):
     def draw_hitbox(self, surface: pygame.Surface) -> None:
         """Draw the hitbox for debugging."""
         pygame.draw.rect(surface, (255, 0, 0), self._hitbox, 2)
+
+    def on_collision(self, other: "BaseEntity") -> None:
+        """Called when this entity collides with another."""
+        # Default behavior: just print (for debugging)
+        print(f"{self.__class__.__name__} collided with {other.__class__.__name__}")
 
 
 class Knight(BaseEntity):
@@ -197,6 +217,12 @@ class Knight(BaseEntity):
         self.image = self._get_current_frame(action=current_action)
         self.update_hitbox()
 
+    def on_collision(self, other: BaseEntity) -> None:
+        if isinstance(other, EnemyKnight):
+            # Example: take damage or bounce off
+            self.hp -= other.attack
+            print(f"Knight took {other.attack} damage! HP left: {self.hp}")
+
 
 class EnemyKnight(BaseEntity):
     """Generic enemy class."""
@@ -231,3 +257,7 @@ class EnemyKnight(BaseEntity):
             self.rect.x + 42, self.rect.y + 42,
             self.rect.width - 84, self.rect.height - 84
         )
+
+    def on_collision(self, other: BaseEntity) -> None:
+        if isinstance(other, Knight):
+            print("EnemyKnight collided with player — could counterattack here!")

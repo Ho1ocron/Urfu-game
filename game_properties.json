@@ -4,7 +4,7 @@
         "Scale": 2,
         "Background_color": [0, 0, 0],
         "Difficulty": "Normal",
-        "DEBUG": false,
+        "DEBUG": true,
 
         "Controls": {
             "DEBUG": "K_F5",
