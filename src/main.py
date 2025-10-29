@@ -29,6 +29,7 @@ class Game(pygame.sprite.Group):
 
         self._player = Knight(init_pos=(310-64//2, 375))
         self._enemy = EnemyKnight(init_pos=(100, 100))
+        self._friend = Knight(init_pos=(300, 300))
 
         self._screen.fill((255, 255, 255))
         self.group = GroupManager()
@@ -41,27 +42,18 @@ class Game(pygame.sprite.Group):
         self.draw_hitbox = False
         self.key_pressed = False
 
-    def hitbox_collision(self, sprite1, sprite2):
-        return sprite1.hitbox.colliderect(sprite2.hitbox) 
-
     def run(self) -> None:
         keys = pygame.key.get_pressed()
         self._player.handle_input(keys)
         self._screen.fill(self.BLACK)  # clear previous frame
         self._screen.blit(self._player.image, self._player.rect)
         self._screen.blit(self._enemy.image, self._enemy.rect)
+        self._screen.blit(self._friend.image, self._friend.rect)
+        
         self._player.rect.clamp_ip(self._screen_rect)
         GroupManager.check_collisions()
 
-        if keys[pygame.K_0]:
-            if self.key_pressed == False:
-                self.draw_hitbox = True
-                self.key_pressed = True
-            else:
-                self.draw_hitbox = False
-                self.key_pressed = False
-
-        if True:
+        if self._game_properties.debug:
             self._player.draw_hitbox(self._screen)
             self._enemy.draw_hitbox(self._screen)
 
