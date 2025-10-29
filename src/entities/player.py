@@ -133,4 +133,4 @@ class Bullet(BaseEntity):
 
         # Define its position and collision rectangle
         self.rect = self.image.get_rect()
-        self.rect.topleft = (10, 15)
+        self.rect.topleft = (30, 45)
