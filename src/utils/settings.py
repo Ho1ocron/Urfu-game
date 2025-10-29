@@ -71,7 +71,7 @@ class GameProperties:
         return self._sprite_scale
 
     @property
-    def controls(self) -> dict[str: str]:
+    def controls(self) -> dict[str, str]:
         controls = {action: getattr(pygame, key_name) for action, key_name in self._key_bindings.items()}
         return controls
 
@@ -80,15 +80,15 @@ class GameProperties:
         return self._game_scale
     
     @property
-    def sprite_properties(self) -> dict[str: int]:
+    def sprite_properties(self) -> dict[str, int]:
         return self._sprite_properties
-    
+    # @classmethod
     @property
-    def char_properties(self) -> dict[str: int]:
+    def char_properties(self) -> dict[str, int]:
         return self._char_properties
     
     @property
-    def char_assets_pathes(self) -> dict[str: str]:
+    def char_assets_pathes(self) -> dict[str, str]:
         return self._char_sprite_sheets_path
 
     @property
@@ -96,6 +96,10 @@ class GameProperties:
         """Returns the scaled screen size as integers."""
         self._screen_size = int(self._width * self._game_scale), int(self._height * self._game_scale)
         return self._screen_size
+    
+    @classmethod
+    def get_attak(self, char: str) -> int:
+        return self._char_properties["Attack"]
     
 
 if __name__ == "__main__":

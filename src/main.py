@@ -4,7 +4,7 @@ import pygame
 
 
 from utils import GameProperties
-from entities import Knight, EnemyKnight, GroupManager
+from entities import Knight, EnemyKnight, GroupManager, Bullet
 
 
 class Game(pygame.sprite.Group):
@@ -29,6 +29,7 @@ class Game(pygame.sprite.Group):
         self._player = Knight(init_pos=(310-64//2, 375))
         self._enemy = EnemyKnight(init_pos=(100, 100))
         self._friend = Knight(init_pos=(300, 300))
+        self._bullet = Bullet()
 
         self.group = GroupManager()
         GroupManager.all_sprites.draw(self._screen)
@@ -42,6 +43,7 @@ class Game(pygame.sprite.Group):
         self._screen.blit(self._player.image, self._player.rect)
         self._screen.blit(self._enemy.image, self._enemy.rect)
         self._screen.blit(self._friend.image, self._friend.rect)
+        self._screen.blit(self._bullet.image, self._friend.rect)
 
         self._player.rect.clamp_ip(self._screen_rect)
         GroupManager.check_collisions()
@@ -49,6 +51,7 @@ class Game(pygame.sprite.Group):
         if self._game_properties.debug:
             self._player.draw_hitbox(self._screen)
             self._enemy.draw_hitbox(self._screen)
+            self._bullet.draw_hitbox(self._screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

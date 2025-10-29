@@ -107,6 +107,30 @@ class Knight(BaseEntity):
         self.update_hitbox()
 
     def on_collision(self, other: BaseEntity) -> None:
-
         self.hp -= other.attack
         print(f"Knight took {other.attack} damage! HP left: {self.hp}")
+
+
+class Bullet(BaseEntity):
+    _hp = 1
+    _attack: int
+    _speed: int = 10
+    SIZE = (5, 10)  # small square bullet
+
+    def __init__(self):
+        game_props = GameProperties("Knight")
+        pygame.sprite.Sprite.__init__(self)
+        GroupManager.add_player(self)
+
+        self._attack = game_props.char_properties["Attack"]
+        dummy_hitbox = pygame.Rect(0, 0, *self.SIZE)
+
+        BaseEntity.__init__(self, hp=self._hp, attack=self._attack, speed=self._speed, hitbox=dummy_hitbox)
+
+        # Make the bullet appear as a small pink-red square
+        self.image = pygame.Surface(self.SIZE)
+        self.image.fill((255, 100, 120))  # light pink-red color
+
+        # Define its position and collision rectangle
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (10, 15)
