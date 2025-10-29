@@ -1,5 +1,5 @@
 import pygame
-import numpy as np
+import math
 from cv2.typing import MatLike
 
 from utils import SpriteHandler, GameProperties
@@ -94,26 +94,36 @@ class Knight(pygame.sprite.Sprite):
     def handle_input(self, keys) -> None:
         moving = False
 
+        dx, dy = 0, 0 # Are needed to impalement normalized diagonal speed
         if keys[self._controls["Walk_left"]]:
-            self.rect.x -= self._speed
+            dx -= 1
             self.direction = "left"
             moving = True
-        elif keys[self._controls["Walk_right"]]:
-            self.rect.x += self._speed
+        if keys[self._controls["Walk_right"]]:
+            dx += 1
             self.direction = "right"
             moving = True
-        elif keys[self._controls["Walk_up"]]:
-            self.rect.y -= self._speed
+        if keys[self._controls["Walk_up"]]:
+            dy -= 1
             self.direction = "up"
             moving = True
-        elif keys[self._controls["Walk_down"]]:
-            self.rect.y += self._speed
+        if keys[self._controls["Walk_down"]]:
+            dy += 1
             self.direction = "down"
             moving = True
         if moving:
             self.frame_index += self.animation_speed
-        # else:
-        #     self.frame_index += 1  # reset to idle
+        
+        # This is needed for normalizing the diagonal movement speed, since diagonal speed is faster due to sqrt(x^2+ y^2)
+        if dx != 0 or dy != 0:
+            magnitude = math.sqrt(dx**2 + dy**2)
+            dx /= magnitude
+            dy /= magnitude
+
+            self.rect.x += dx * self._speed
+            self.rect.y += dy * self._speed
+
+            self.frame_index += self.animation_speed
 
         current_action = "Walk" if moving else "Idle"
 
