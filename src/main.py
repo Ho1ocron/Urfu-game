@@ -20,27 +20,20 @@ class Game(pygame.sprite.Group):
 
     def __init__(self) -> None:
         super().__init__()
-        self.__screen_size = self._game_properties.screen_size
         pygame.init()
-        self._screen = pygame.display.set_mode(self.__screen_size)
 
-        # self.player_group = pygame.sprite.Group()
-        # self.enemy_group = pygame.sprite.Group()
+        self.__screen_size = self._game_properties.screen_size
+        self._screen = pygame.display.set_mode(self.__screen_size)
+        self._screen.fill((255, 255, 255))
 
         self._player = Knight(init_pos=(310-64//2, 375))
         self._enemy = EnemyKnight(init_pos=(100, 100))
         self._friend = Knight(init_pos=(300, 300))
 
-        self._screen.fill((255, 255, 255))
         self.group = GroupManager()
         GroupManager.all_sprites.draw(self._screen)
-        # self.group.player_group.draw(self._screen)
-        # self.group.enemy_group.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
-
-        self.draw_hitbox = False
-        self.key_pressed = False
 
     def run(self) -> None:
         keys = pygame.key.get_pressed()
@@ -49,7 +42,7 @@ class Game(pygame.sprite.Group):
         self._screen.blit(self._player.image, self._player.rect)
         self._screen.blit(self._enemy.image, self._enemy.rect)
         self._screen.blit(self._friend.image, self._friend.rect)
-        
+
         self._player.rect.clamp_ip(self._screen_rect)
         GroupManager.check_collisions()
 
