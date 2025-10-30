@@ -1,5 +1,6 @@
 import pygame
 from cv2.typing import MatLike
+from random import randint
 
 from utils import SpriteHandler, GameProperties
 from entities.entity import BaseEntity
@@ -10,7 +11,7 @@ class Dragon(BaseEntity):
     """Generic enemy class."""
     _id: int
 
-    def __init__(self, init_pos: tuple[int], sprite_name: str = "Dragon", _id: str = "enemy1"):
+    def __init__(self, init_pos: tuple[int] = (0, 0), sprite_name: str = "Dragon", _id: str = "enemy1"):
         pygame.sprite.Sprite.__init__(self)
         
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
@@ -23,6 +24,8 @@ class Dragon(BaseEntity):
         dummy_hitbox = pygame.Rect(0, 0, 128, 128)
         BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
 
+        init_pos = (randint(50, 570), randint(50, 700))
+
         self._animation = self.sprite_handler.animation
         self.direction = "down"
         self.frame_index = 0
@@ -30,6 +33,9 @@ class Dragon(BaseEntity):
         self.rect = self.image.get_rect(center=init_pos)
 
         self._id = _id
+
+        self.teleport_cooldown = 3000
+        self.last_shot_time = 0
 
         EntityMaster.add_enemy(self)
         EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
@@ -51,6 +57,13 @@ class Dragon(BaseEntity):
         self.hp -= other.attack
     
     def update(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time >= self.teleport_cooldown:
+            new_pos = (randint(50, 570), randint(50, 700))
+            if new_pos not in EntityMaster.enemy_poses.values() and new_pos != EntityMaster.player_pos:
+                self.rect.x, self.rect.y = new_pos
+                EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
+                self.last_shot_time = current_time
         # Reset frame index when looping animation
         if self.frame_index >= len(self._animation["Idle"][self.direction]):
             self.frame_index = 0

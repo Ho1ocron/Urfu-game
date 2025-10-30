@@ -26,7 +26,7 @@ class Game(pygame.sprite.Group):
 
         self._player = Knight(init_pos=(310-64//2, 375))
         for i in range(5):
-            self._enemy = Dragon(init_pos=(100+i*50, 100), _id=f"Enemy{i}")
+            self._enemy = Dragon(_id=f"Enemy{i}")
 
         EntityMaster.all_sprites.draw(self._screen)
 
