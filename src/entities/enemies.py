@@ -72,7 +72,7 @@ class Dragon(BaseEntity):
             if new_pos not in EntityMaster.enemy_poses.values() and new_pos != EntityMaster.player_pos:
                 self.rect.x, self.rect.y = new_pos
                 EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
-                self.teleport_cooldown = 5000
+                self.teleport_cooldown = randint(5000, 10000)
                 self.last_shot_time = current_time
         # Reset frame index when looping animation
         if self.frame_index >= len(self._animation["Idle"][self.direction]):
