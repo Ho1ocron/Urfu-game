@@ -34,7 +34,7 @@ class Dragon(BaseEntity):
 
         self._id = _id
 
-        self.teleport_cooldown = 3000
+        self.teleport_cooldown = randint(7000, 10000)
         self.last_shot_time = 0
 
         EntityMaster.add_enemy(self)
@@ -57,12 +57,22 @@ class Dragon(BaseEntity):
         self.hp -= other.attack
     
     def update(self):
+        if self.rect.x + 20 < EntityMaster.player_pos[0]:
+            self.direction = "right"
+        else:
+            self.direction = "left"
+        if self.rect.y + 20 > EntityMaster.player_pos[1]:
+            self.direction = "up"
+        else:
+            self.direction = "down"
+
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot_time >= self.teleport_cooldown:
-            new_pos = (randint(50, 570), randint(50, 700))
+            new_pos = (randint(50, 520), randint(50, 650))
             if new_pos not in EntityMaster.enemy_poses.values() and new_pos != EntityMaster.player_pos:
                 self.rect.x, self.rect.y = new_pos
                 EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
+                self.teleport_cooldown = 5000
                 self.last_shot_time = current_time
         # Reset frame index when looping animation
         if self.frame_index >= len(self._animation["Idle"][self.direction]):
