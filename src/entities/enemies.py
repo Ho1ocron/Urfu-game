@@ -6,10 +6,10 @@ from entities.entity import BaseEntity
 from entities.group_manager import GroupManager
 
 
-class EnemyKnight(BaseEntity):
+class Dragon(BaseEntity):
     """Generic enemy class."""
 
-    def __init__(self, init_pos: tuple[int], sprite_name: str = "Knight"):
+    def __init__(self, init_pos: tuple[int], sprite_name: str = "Dragon"):
         pygame.sprite.Sprite.__init__(self)
         
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)

@@ -2,7 +2,7 @@ from sys import exit as sys_exit
 import pygame
 
 from utils import GameProperties
-from entities import Knight, EnemyKnight, GroupManager, Bullet
+from entities import Knight, Dragon, GroupManager, Bullet
 
 
 class Game(pygame.sprite.Group):
@@ -25,7 +25,7 @@ class Game(pygame.sprite.Group):
         self._screen.fill((255, 255, 255))
 
         self._player = Knight(init_pos=(310-64//2, 375))
-        self._enemy = EnemyKnight(init_pos=(100, 100))
+        self._enemy = Dragon(init_pos=(100, 100))
 
         GroupManager.all_sprites.draw(self._screen)
 
