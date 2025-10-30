@@ -4,7 +4,7 @@
         "Scale": 2,
         "Background_color": [0, 0, 0],
         "Difficulty": "Normal",
-        "DEBUG": true,
+        "DEBUG": false,
 
         "Controls": {
             "DEBUG": "K_F5",
@@ -20,7 +20,7 @@
         "Knight": {
             "Ingame_Properties": {
                 "Attack": 10,
-                "HP": 10,
+                "HP": 100,
                 "Speed": 10
             },
 

@@ -6,6 +6,7 @@ class GroupManager:
     player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()  # optional convenience group
+    bullet_group = pygame.sprite.Group()
 
     @classmethod
     def add_player(cls, player: pygame.sprite.Sprite) -> None:
@@ -16,6 +17,10 @@ class GroupManager:
     def add_enemy(cls, enemy: pygame.sprite.Sprite) -> None:
         cls.enemy_group.add(enemy)
         cls.all_sprites.add(enemy)
+    @classmethod
+    def add_bullet(cls, bullet: pygame.sprite.Sprite) -> None:
+        cls.bullet_group.add(bullet)
+        cls.all_sprites.add(bullet)
 
     @classmethod
     def clear_all(cls) -> None:
@@ -25,15 +30,15 @@ class GroupManager:
         cls.all_sprites.empty()
 
     @classmethod
+    def remove(cls, bullet) -> None:
+        cls.bullet_group.remove_internal(bullet)
+
+    @classmethod
     def check_collisions(cls):
         """Detect and handle collisions between player and enemies."""
-        for player in cls.player_group:
-            # Detect collisions between this player and all enemies
+        for bullet in cls.bullet_group:
             collided_enemies = pygame.sprite.spritecollide(
-                player, cls.enemy_group, False, pygame.sprite.collide_mask
+                bullet, cls.enemy_group, False, pygame.sprite.collide_mask
             )
-
             for enemy in collided_enemies:
-                if player != enemy:
-                    player.on_collision(enemy)
-                    enemy.on_collision(player)
+                bullet.on_collision(enemy)

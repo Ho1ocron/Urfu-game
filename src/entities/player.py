@@ -15,7 +15,7 @@ class Knight(BaseEntity):
     def __init__(self, init_pos: tuple[int], x: bool = False) -> None:
         # Initialize sprite
         pygame.sprite.Sprite.__init__(self)
-        GroupManager.add_player(self)
+        
 
         # Initialize handler and properties
         self.sprite_handler = SpriteHandler(char_sprite="Knight")
@@ -47,6 +47,10 @@ class Knight(BaseEntity):
         self.update_hitbox()
         self.x = x
 
+        self.shoot_cooldown = 300  # milliseconds between shots
+        self.last_shot_time = 0
+        GroupManager.add_player(self)
+
     def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
         frames = self._animation[action][self.direction]
@@ -62,8 +66,16 @@ class Knight(BaseEntity):
             self.rect.height - self.hitbox_margin * 2
         )
 
+    def shoot(self) -> None:
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time >= self.shoot_cooldown:
+            bullet = Bullet(direction=self.direction)
+            bullet.rect.center = self.rect.center
+            self.last_shot_time = current_time
+
     def handle_input(self, keys) -> None:
         """Handle keyboard input for movement and animation."""
+        
         moving = False
         dx, dy = 0, 0
 
@@ -83,6 +95,8 @@ class Knight(BaseEntity):
             dy += 1
             self.direction = "down"
             moving = True
+        if keys[pygame.K_SPACE]:
+            self.shoot()
 
         # Normalize diagonal movement
         if dx != 0 or dy != 0:
@@ -114,13 +128,14 @@ class Knight(BaseEntity):
 class Bullet(BaseEntity):
     _hp = 1
     _attack: int
-    _speed: int = 10
-    SIZE = (5, 10)  # small square bullet
+    _speed: int = 25
+    SIZE = (5, 5)  # small square bullet
+    direction: str
 
-    def __init__(self):
+    def __init__(self, direction: str):
         game_props = GameProperties("Knight")
         pygame.sprite.Sprite.__init__(self)
-        GroupManager.add_player(self)
+        
 
         self._attack = game_props.char_properties["Attack"]
         dummy_hitbox = pygame.Rect(0, 0, *self.SIZE)
@@ -133,4 +148,28 @@ class Bullet(BaseEntity):
 
         # Define its position and collision rectangle
         self.rect = self.image.get_rect()
-        self.rect.topleft = (30, 45)
+        self.rect.topleft = (40, 40)
+        GroupManager.add_bullet(self)
+        self.direction = direction
+
+    def update(self):
+        if self.direction == "left":
+            self.rect.x -= self.speed
+        elif self.direction == "right":
+            self.rect.x += self.speed
+        elif self.direction == "up":
+            self.rect.y -= self.speed
+        elif self.direction == "down":
+            self.rect.y += self.speed
+
+        if (self.rect.x < 0 or self.rect.x > 800 or 
+            self.rect.y < 0 or self.rect.y > 600):
+            self.kill()
+
+        if self._hp <= 0:
+            self.kill()
+
+    def on_collision(self, other: BaseEntity) -> None:
+        self.hp -= other.attack
+        other.hp -= self._attack
+        self.kill()

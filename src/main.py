@@ -29,9 +29,7 @@ class Game(pygame.sprite.Group):
         self._player = Knight(init_pos=(310-64//2, 375))
         self._enemy = EnemyKnight(init_pos=(100, 100))
         self._friend = Knight(init_pos=(300, 300))
-        self._bullet = Bullet()
 
-        self.group = GroupManager()
         GroupManager.all_sprites.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
@@ -39,19 +37,19 @@ class Game(pygame.sprite.Group):
     def run(self) -> None:
         keys = pygame.key.get_pressed()
         self._player.handle_input(keys)
-        self._screen.fill(self.BLACK)  # clear previous frame
-        self._screen.blit(self._player.image, self._player.rect)
-        self._screen.blit(self._enemy.image, self._enemy.rect)
-        self._screen.blit(self._friend.image, self._friend.rect)
-        self._screen.blit(self._bullet.image, self._friend.rect)
+        
+        GroupManager.all_sprites.update()
 
         self._player.rect.clamp_ip(self._screen_rect)
         GroupManager.check_collisions()
 
+        self._screen.fill(self.BLACK)  # clear previous frame
+
+        GroupManager.all_sprites.draw(self._screen)
+
         if self._game_properties.debug:
             self._player.draw_hitbox(self._screen)
             self._enemy.draw_hitbox(self._screen)
-            self._bullet.draw_hitbox(self._screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
