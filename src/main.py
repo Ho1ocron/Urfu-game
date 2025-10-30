@@ -25,7 +25,8 @@ class Game(pygame.sprite.Group):
         self._screen.fill((255, 255, 255))
 
         self._player = Knight(init_pos=(310-64//2, 375))
-        self._enemy = Dragon(init_pos=(100, 100))
+        for i in range(5):
+            self._enemy = Dragon(init_pos=(100+i*50, 100), _id=f"Enemy{i}")
 
         GroupManager.all_sprites.draw(self._screen)
 
@@ -46,7 +47,7 @@ class Game(pygame.sprite.Group):
 
         if self._game_properties.debug:
             self._player.draw_hitbox(self._screen)
-            self._enemy.draw_hitbox(self._screen)
+            # self._enemy.draw_hitbox(self._screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

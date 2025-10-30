@@ -5,6 +5,7 @@ class GroupManager:
     """Centralized manager for all sprite groups."""
     player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
+    enemy_pos: dict[str, tuple[int]] = {}
     all_sprites = pygame.sprite.Group() 
     bullet_group = pygame.sprite.Group()
 
@@ -17,6 +18,15 @@ class GroupManager:
     def add_enemy(cls, enemy: pygame.sprite.Sprite) -> None:
         cls.enemy_group.add(enemy)
         cls.all_sprites.add(enemy)
+
+    @classmethod
+    def add_enemy_pos(cls, pos: dict[str, tuple[int]]) -> None:
+        cls.enemy_pos.update(pos)
+
+    @classmethod
+    def remove_enemy_pos(cls, _id: str):
+        cls.enemy_pos.pop(_id)
+
     @classmethod
     def add_bullet(cls, bullet: pygame.sprite.Sprite) -> None:
         cls.bullet_group.add(bullet)

@@ -8,8 +8,9 @@ from entities.group_manager import GroupManager
 
 class Dragon(BaseEntity):
     """Generic enemy class."""
+    _id: int
 
-    def __init__(self, init_pos: tuple[int], sprite_name: str = "Dragon"):
+    def __init__(self, init_pos: tuple[int], sprite_name: str = "Dragon", _id: str = "enemy1"):
         pygame.sprite.Sprite.__init__(self)
         
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
@@ -28,7 +29,10 @@ class Dragon(BaseEntity):
         self.image = self._get_current_frame("Idle")
         self.rect = self.image.get_rect(center=init_pos)
 
+        self._id = _id
+
         GroupManager.add_enemy(self)
+        GroupManager.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
 
         self.update_hitbox()
 
@@ -55,4 +59,5 @@ class Dragon(BaseEntity):
         self.frame_index += 0.2
         self.image = self._get_current_frame(action="Idle")
         if self.hp <= 0:
+            GroupManager.remove_enemy_pos(self._id)
             self.kill()
