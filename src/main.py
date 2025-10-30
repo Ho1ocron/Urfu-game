@@ -1,7 +1,5 @@
 from sys import exit as sys_exit
-from datetime import datetime
 import pygame
-
 
 from utils import GameProperties
 from entities import Knight, EnemyKnight, GroupManager, Bullet
@@ -53,7 +51,6 @@ class Game(pygame.sprite.Group):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys_exit()
-        
         
         pygame.display.flip()
         self.__clock.tick(25)        

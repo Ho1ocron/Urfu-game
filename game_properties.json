@@ -8,11 +8,11 @@
 
         "Controls": {
             "DEBUG": "K_F5",
-            "Attack": "K_UP",
-            "Walk_up": "K_UP",
-            "Walk_down": "K_DOWN",
-            "Walk_right": "K_RIGHT",
-            "Walk_left": "K_LEFT"
+            "Attack": "K_SPACE",
+            "Walk_up": "K_w",
+            "Walk_down": "K_s",
+            "Walk_right": "K_d",
+            "Walk_left": "K_a"
         }
     },
 

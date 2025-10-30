@@ -12,11 +12,10 @@ class Knight(BaseEntity):
 
     facing_right: bool = True
 
-    def __init__(self, init_pos: tuple[int], x: bool = False) -> None:
+    def __init__(self, init_pos: tuple[int]) -> None:
         # Initialize sprite
         pygame.sprite.Sprite.__init__(self)
         
-
         # Initialize handler and properties
         self.sprite_handler = SpriteHandler(char_sprite="Knight")
         self.game_props = GameProperties("Knight")
@@ -45,10 +44,10 @@ class Knight(BaseEntity):
         # Hitbox setup
         self.hitbox_margin = 42
         self.update_hitbox()
-        self.x = x
 
         self.shoot_cooldown = 300  # milliseconds between shots
         self.last_shot_time = 0
+
         GroupManager.add_player(self)
 
     def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
@@ -75,7 +74,6 @@ class Knight(BaseEntity):
 
     def handle_input(self, keys) -> None:
         """Handle keyboard input for movement and animation."""
-        
         moving = False
         dx, dy = 0, 0
 
@@ -122,7 +120,6 @@ class Knight(BaseEntity):
 
     def on_collision(self, other: BaseEntity) -> None:
         self.hp -= other.attack
-        print(f"Knight took {other.attack} damage! HP left: {self.hp}")
 
 
 class Bullet(BaseEntity):
@@ -136,7 +133,6 @@ class Bullet(BaseEntity):
         game_props = GameProperties("Knight")
         pygame.sprite.Sprite.__init__(self)
         
-
         self._attack = game_props.char_properties["Attack"]
         dummy_hitbox = pygame.Rect(0, 0, *self.SIZE)
 

@@ -31,8 +31,6 @@ class GameProperties:
     # Entity props
     _entity_props: int
 
-    # Knight (player) properties
-
     # Dragon properties
 
     # Foes
@@ -61,7 +59,6 @@ class GameProperties:
             # Получаем управление
             self._key_bindings = self._settings["GameProperties"]["Controls"]
 
-    
     @property
     def debug(self) -> bool:
         return self._debug
@@ -96,10 +93,6 @@ class GameProperties:
         """Returns the scaled screen size as integers."""
         self._screen_size = int(self._width * self._game_scale), int(self._height * self._game_scale)
         return self._screen_size
-    
-    @classmethod
-    def get_attak(self, char: str) -> int:
-        return self._char_properties["Attack"]
     
 
 if __name__ == "__main__":

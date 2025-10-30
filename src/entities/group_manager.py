@@ -5,7 +5,7 @@ class GroupManager:
     """Centralized manager for all sprite groups."""
     player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group()  # optional convenience group
+    all_sprites = pygame.sprite.Group() 
     bullet_group = pygame.sprite.Group()
 
     @classmethod
@@ -30,11 +30,7 @@ class GroupManager:
         cls.all_sprites.empty()
 
     @classmethod
-    def remove(cls, bullet) -> None:
-        cls.bullet_group.remove_internal(bullet)
-
-    @classmethod
-    def check_collisions(cls):
+    def check_collisions(cls) -> None:
         """Detect and handle collisions between player and enemies."""
         for bullet in cls.bullet_group:
             collided_enemies = pygame.sprite.spritecollide(

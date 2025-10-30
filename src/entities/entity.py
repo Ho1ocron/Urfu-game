@@ -73,7 +73,6 @@ class BaseEntity(pygame.sprite.Sprite):
 
     def on_collision(self, other: "BaseEntity") -> None:
         """Called when this entity collides with another."""
-        # Default behavior: just print (for debugging)
         print(f"{self.__class__.__name__} collided with {other.__class__.__name__}")
 
 

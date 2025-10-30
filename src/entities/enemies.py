@@ -1,8 +1,6 @@
 import pygame
-import math
 from cv2.typing import MatLike
 
-from entities.player import Knight
 from utils import SpriteHandler, GameProperties
 from entities.entity import BaseEntity
 from entities.group_manager import GroupManager
@@ -29,12 +27,14 @@ class EnemyKnight(BaseEntity):
         self.frame_index = 0
         self.image = self._get_current_frame("Idle")
         self.rect = self.image.get_rect(center=init_pos)
+
         GroupManager.add_enemy(self)
+
         self.update_hitbox()
 
     def _get_current_frame(self, action: str = "Idle") -> pygame.Surface:
         frames = self._animation[action][self.direction]
-        frame = frames[int(self.frame_index) % len(frames)]
+        frame: MatLike = frames[int(self.frame_index) % len(frames)]
         return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGBA")
 
     def update_hitbox(self):
@@ -45,7 +45,6 @@ class EnemyKnight(BaseEntity):
 
     def on_collision(self, other: BaseEntity) -> None:
         self.hp -= other.attack
-        print("EnemyKnight collided with player — could counterattack here!")
     
     def update(self):
         if self.hp <= 0:
