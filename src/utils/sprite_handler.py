@@ -17,8 +17,8 @@ class SpriteHandler:
     _sprite_size: int = 192
     _total_sprites: int = 8
     _sprites_per_row: int = 3
-    _sprites_bytes: list[bytes]
     _sprite_scale: float = 2
+    _sprites_bytes: list[bytes]
 
     _scale: float
     
@@ -44,9 +44,12 @@ class SpriteHandler:
         sprite_properties = game_properties.sprite_properties
         sprite_sheets_pathes: dict[str: str] = game_properties.char_assets_pathes
 
-        self.SPRITE_WIDTH: int = sprite_properties["SPRITE_WIDTH"]
-        self.SPRITE_HEIGHT: int = sprite_properties["SPRITE_HEIGHT"]
-        self.NUM_SPRITES: int = sprite_properties["NUM_SPRITES"]
+        self.SPRITE_WIDTH: int = sprite_properties["Sprite_width"]
+        self.SPRITE_HEIGHT: int = sprite_properties["Sprite_height"]
+        self.NUM_SPRITES: int = sprite_properties["Num_sprites"]
+
+        self._sprites_per_row: int = sprite_properties["Sprites_per_row"]
+        self._sprite_scale: float = sprite_properties["Scale"]
 
         self._scale = game_properties.game_scale
         # self._sprite_properties
@@ -73,7 +76,7 @@ class SpriteHandler:
             y = 0  # since we have only one row
             try:
                 sprite = sheet[y:y + sprite_height, x:x + sprite_width]
-                sprite = resize(sprite, None, fx=self._scale, fy=self._scale, interpolation=INTER_NEAREST)
+                sprite = resize(sprite, None, fx=self._sprite_scale, fy=self._sprite_scale, interpolation=INTER_NEAREST)
                 sprite = cvtColor(sprite, COLOR_BGRA2RGBA)
                 sprites.append(sprite)
             except Exception as sprite_handler:

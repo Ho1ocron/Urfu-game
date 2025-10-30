@@ -25,10 +25,13 @@
             },
 
             "Sprite_properties": {
-                "SPRITE_WIDTH": 48,
-                "SPRITE_HEIGHT": 64,
-                "NUM_SPRITES": 8,
-                "Scale": 2.5,
+                "Sprite_size": 192,
+                "Sprites_per_row": 3,
+                "Sprite_scale": 2,
+                "Sprite_width": 48,
+                "Sprite_height": 64,
+                "Num_sprites": 8,
+                "Scale": 2.0,
 
                 "Frames_path": {
                     "Walk": {
