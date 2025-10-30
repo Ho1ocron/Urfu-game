@@ -28,7 +28,6 @@ class Game(pygame.sprite.Group):
 
         self._player = Knight(init_pos=(310-64//2, 375))
         self._enemy = EnemyKnight(init_pos=(100, 100))
-        self._friend = Knight(init_pos=(300, 300))
 
         GroupManager.all_sprites.draw(self._screen)
 
