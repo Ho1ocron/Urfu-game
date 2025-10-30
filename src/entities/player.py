@@ -49,6 +49,7 @@ class Knight(BaseEntity):
         self.last_shot_time = 0
 
         GroupManager.add_player(self)
+        GroupManager.player_pos = (self.rect.x, self.rect.y)
 
     def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
@@ -116,6 +117,7 @@ class Knight(BaseEntity):
 
         # Update image and hitbox
         self.image = self._get_current_frame(action=current_action)
+        GroupManager.player_pos = (self.rect.x, self.rect.y)
         self.update_hitbox()
 
     def on_collision(self, other: BaseEntity) -> None:

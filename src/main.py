@@ -52,7 +52,7 @@ class Game(pygame.sprite.Group):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys_exit()
-        
+                
         pygame.display.flip()
         self.__clock.tick(25)        
     
