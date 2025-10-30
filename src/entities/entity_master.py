@@ -1,7 +1,7 @@
 import pygame
 
 
-class GroupManager:
+class EntityMaster:
     """Centralized manager for all sprite groups."""
     player_group = pygame.sprite.Group()
     player_pos: tuple[int]

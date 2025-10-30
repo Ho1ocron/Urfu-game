@@ -2,7 +2,7 @@ from sys import exit as sys_exit
 import pygame
 
 from utils import GameProperties
-from entities import Knight, Dragon, GroupManager, Bullet
+from entities import Knight, Dragon, EntityMaster
 
 
 class Game(pygame.sprite.Group):
@@ -28,7 +28,7 @@ class Game(pygame.sprite.Group):
         for i in range(5):
             self._enemy = Dragon(init_pos=(100+i*50, 100), _id=f"Enemy{i}")
 
-        GroupManager.all_sprites.draw(self._screen)
+        EntityMaster.all_sprites.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
 
@@ -36,14 +36,14 @@ class Game(pygame.sprite.Group):
         keys = pygame.key.get_pressed()
         self._player.handle_input(keys)
         
-        GroupManager.all_sprites.update()
+        EntityMaster.all_sprites.update()
 
         self._player.rect.clamp_ip(self._screen_rect)
-        GroupManager.check_collisions()
+        EntityMaster.check_collisions()
 
         self._screen.fill(self.BLACK)  # clear previous frame
 
-        GroupManager.all_sprites.draw(self._screen)
+        EntityMaster.all_sprites.draw(self._screen)
 
         if self._game_properties.debug:
             self._player.draw_hitbox(self._screen)
@@ -52,7 +52,7 @@ class Game(pygame.sprite.Group):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys_exit()
-                
+
         pygame.display.flip()
         self.__clock.tick(25)        
     

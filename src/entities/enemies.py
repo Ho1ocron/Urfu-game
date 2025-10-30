@@ -3,7 +3,7 @@ from cv2.typing import MatLike
 
 from utils import SpriteHandler, GameProperties
 from entities.entity import BaseEntity
-from entities.group_manager import GroupManager
+from entities.entity_master import EntityMaster
 
 
 class Dragon(BaseEntity):
@@ -31,8 +31,8 @@ class Dragon(BaseEntity):
 
         self._id = _id
 
-        GroupManager.add_enemy(self)
-        GroupManager.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
+        EntityMaster.add_enemy(self)
+        EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
 
         self.update_hitbox()
 
@@ -59,5 +59,5 @@ class Dragon(BaseEntity):
         self.frame_index += 0.2
         self.image = self._get_current_frame(action="Idle")
         if self.hp <= 0:
-            GroupManager.remove_enemy_pos(self._id)
+            EntityMaster.remove_enemy_pos(self._id)
             self.kill()

@@ -4,7 +4,7 @@ from cv2.typing import MatLike
 
 from utils import SpriteHandler, GameProperties
 from entities.entity import BaseEntity
-from entities.group_manager import GroupManager
+from entities.entity_master import EntityMaster
 
 
 class Knight(BaseEntity):
@@ -48,8 +48,8 @@ class Knight(BaseEntity):
         self.shoot_cooldown = 300  # milliseconds between shots
         self.last_shot_time = 0
 
-        GroupManager.add_player(self)
-        GroupManager.player_pos = (self.rect.x, self.rect.y)
+        EntityMaster.add_player(self)
+        EntityMaster.player_pos = (self.rect.x, self.rect.y)
 
     def _get_current_frame(self, action: str = "Walk") -> pygame.Surface:
         """Return current pygame Surface for the knight’s facing direction."""
@@ -117,7 +117,7 @@ class Knight(BaseEntity):
 
         # Update image and hitbox
         self.image = self._get_current_frame(action=current_action)
-        GroupManager.player_pos = (self.rect.x, self.rect.y)
+        EntityMaster.player_pos = (self.rect.x, self.rect.y)
         self.update_hitbox()
 
     def on_collision(self, other: BaseEntity) -> None:
@@ -147,7 +147,7 @@ class Bullet(BaseEntity):
         # Define its position and collision rectangle
         self.rect = self.image.get_rect()
         self.rect.topleft = (40, 40)
-        GroupManager.add_bullet(self)
+        EntityMaster.add_bullet(self)
         self.direction = direction
 
     def update(self):
