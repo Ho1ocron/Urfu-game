@@ -47,5 +47,12 @@ class Dragon(BaseEntity):
         self.hp -= other.attack
     
     def update(self):
+        # Reset frame index when looping animation
+        if self.frame_index >= len(self._animation["Idle"][self.direction]):
+            self.frame_index = 0
+
+        # Update image and hitbox
+        self.frame_index += 0.2
+        self.image = self._get_current_frame(action="Idle")
         if self.hp <= 0:
             self.kill()
