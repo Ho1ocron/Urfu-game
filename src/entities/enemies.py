@@ -113,7 +113,7 @@ class Fbullet(BaseEntity):
     """Fbullet is a bullet for foes that they can strike player with."""
     _hp = 1
     _attack: int
-    _speed: int = 20
+    _speed: int = 15
     SIZE = (7, 7)  # small square bullet
     direction: str
 
