@@ -3,6 +3,7 @@ import pygame
 
 from utils import GameProperties
 from entities import Knight, Dragon, EntityMaster
+from gui import HPBar
 
 
 class Game(pygame.sprite.Group):
@@ -31,6 +32,7 @@ class Game(pygame.sprite.Group):
         EntityMaster.all_sprites.draw(self._screen)
 
         self._screen_rect = pygame.Rect((0,0), self.__screen_size)
+        self.hp_bar = HPBar(self._player, self._screen, pos=(self.__screen_size[0] - 220, 20))
 
     def run(self) -> None:
         keys = pygame.key.get_pressed()
@@ -53,6 +55,7 @@ class Game(pygame.sprite.Group):
             if event.type == pygame.QUIT:
                 sys_exit()
 
+        self.hp_bar.draw()
         pygame.display.flip()
         self.__clock.tick(25)        
     

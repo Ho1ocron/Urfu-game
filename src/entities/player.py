@@ -11,6 +11,7 @@ class Knight(BaseEntity):
     """Knight is a controllable player character."""
 
     facing_right: bool = True
+    max_hp: int
 
     def __init__(self, init_pos: tuple[int]) -> None:
         # Initialize sprite
@@ -21,7 +22,7 @@ class Knight(BaseEntity):
         self.game_props = GameProperties("Knight")
 
         # Load game properties
-        hp = self.game_props.char_properties["HP"]
+        self.max_hp = self.game_props.char_properties["HP"]
         attack = self.game_props.char_properties["Attack"]
         speed = self.game_props.char_properties["Speed"]
         self._controls = self.game_props.controls
@@ -31,7 +32,7 @@ class Knight(BaseEntity):
         dummy_hitbox = pygame.Rect(0, 0, 32, 32)
 
         # Initialize BaseEntity
-        BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
+        BaseEntity.__init__(self, hp=self.max_hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
 
         # Animation setup
         self.direction = "down"
