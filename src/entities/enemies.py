@@ -33,8 +33,8 @@ class Dragon(BaseEntity):
         self.rect = self.image.get_rect(center=init_pos)
 
         self._id = _id
-        self.shoot_cooldown = 3000
-        self.last_shot_time = 0
+        self.shoot_cooldown = randint(3000, 10000)
+        self.last_shot_time = pygame.time.get_ticks() - randint(0, self.shoot_cooldown)
 
         self.teleport_cooldown = randint(7000, 10000)
         self.last_teleport_time = pygame.time.get_ticks() - randint(0, self.teleport_cooldown)
@@ -61,9 +61,10 @@ class Dragon(BaseEntity):
     def shoot(self) -> None:
         """Foes' attack: they shoot bullets (Fbullet) at the player"""
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time >= self.shoot_cooldown:
+        if current_time - self.last_shot_time >= self.shoot_cooldown + randint(-500, 1000):
             bullet = Fbullet(direction=self.direction)
             bullet.rect.center = self.rect.center
+            self.shoot_cooldown = randint(3000, 4000)
             self.last_shot_time = current_time
 
     
@@ -112,7 +113,7 @@ class Fbullet(BaseEntity):
     """Fbullet is a bullet for foes that they can strike player with."""
     _hp = 1
     _attack: int
-    _speed: int = 25
+    _speed: int = 20
     SIZE = (7, 7)  # small square bullet
     direction: str
 
