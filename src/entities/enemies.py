@@ -132,7 +132,7 @@ class Fbullet(BaseEntity):
 
         # Define its position and collision rectangle
         self.rect = self.image.get_rect()
-        self.rect.topleft = (40, 40)
+        self.rect.topleft = (30, 30)
         EntityMaster.add_fbullet(self)
         self.direction = direction
 

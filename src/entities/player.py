@@ -124,7 +124,7 @@ class Knight(BaseEntity):
             self.shoot()
         if keys[self._controls["Dash"]]:
             self.dash()
-        if keys[pygame.K_z]:
+        if keys[self._controls["Heal"]]:
             self.heal()
 
         # Normalize diagonal movement
