@@ -49,6 +49,9 @@ class Knight(BaseEntity):
         self.shoot_cooldown = 300  # milliseconds between shots
         self.last_shot_time = 0
 
+        self.heal_cooldown = 5000
+        self.last_time_healed = 0
+
         EntityMaster.add_player(self)
         EntityMaster.player_pos = (self.rect.x, self.rect.y)
 
@@ -86,7 +89,12 @@ class Knight(BaseEntity):
         if self.direction == "left":
             self.rect.x -= 20
 
-
+    def heal(self) -> None:
+        """Player heals itself"""
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_time_healed >= self.heal_cooldown:
+            self.hp = min(self.hp + 20, self.max_hp) # So it won't be greater than max hp
+            self.last_time_healed = current_time
 
     def handle_input(self, keys) -> None:
         """Handle keyboard input for movement and animation."""
@@ -116,6 +124,8 @@ class Knight(BaseEntity):
             self.shoot()
         if keys[self._controls["Dash"]]:
             self.dash()
+        if keys[pygame.K_z]:
+            self.heal()
 
         # Normalize diagonal movement
         if dx != 0 or dy != 0:
