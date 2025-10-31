@@ -9,6 +9,7 @@ from cv2 import (
     INTER_NEAREST,
     COLOR_BGRA2RGBA,
 )
+import cv2
 
 from utils.settings import GameProperties
 
