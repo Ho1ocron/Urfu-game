@@ -15,7 +15,8 @@
             "Walk_left": "K_LEFT",
             "Shoot": "K_c",
             "Dash": "K_x",
-            "Heal": "K_z"
+            "Heal": "K_z",
+            "Give_up": "K_BACKSPACE"
         }
     },
 
