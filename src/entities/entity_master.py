@@ -8,6 +8,7 @@ class EntityMaster:
 
     enemy_group = pygame.sprite.Group()
     enemy_poses: dict[str, tuple[int]] = {}
+    enemy_collision_radius: int = 100
 
     bullet_group = pygame.sprite.Group()
 
@@ -30,6 +31,23 @@ class EntityMaster:
     @classmethod
     def remove_enemy_pos(cls, _id: str):
         cls.enemy_poses.pop(_id)
+
+    @classmethod
+    def is_position_free(cls, new_pos: tuple[int, int]) -> bool:
+        for pos in cls.enemy_poses.values():
+            dx = pos[0] - new_pos[0]
+            dy = pos[1] - new_pos[1]
+            distance_sq = dx * dx + dy * dy
+            if distance_sq < cls.enemy_collision_radius ** 2:
+                return False
+            
+        dx = cls.player_pos[0] - new_pos[0]
+        dy = cls.player_pos[1] - new_pos[1]
+        distance_sq = dx * dx + dy * dy 
+        
+        if distance_sq < cls.enemy_collision_radius ** 2:
+                return False
+        return True
 
     @classmethod
     def add_bullet(cls, bullet: pygame.sprite.Sprite) -> None:

@@ -33,7 +33,6 @@ class Dragon(BaseEntity):
         self.rect = self.image.get_rect(center=init_pos)
 
         self._id = _id
-
         self.teleport_cooldown = randint(7000, 10000)
         self.last_shot_time = pygame.time.get_ticks() - randint(0, self.teleport_cooldown)
 
@@ -67,14 +66,17 @@ class Dragon(BaseEntity):
             self.direction = "down"
 
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time >= self.teleport_cooldown + randint(-500, 500):
+        if current_time - self.last_shot_time >= self.teleport_cooldown + randint(-500, 5000):
             # if randint(0, 100) < 20:  
             new_pos = (randint(50, 520), randint(50, 650))
-            if new_pos not in EntityMaster.enemy_poses.values() and new_pos != EntityMaster.player_pos:
+            if EntityMaster.is_position_free(new_pos) and new_pos != EntityMaster.player_pos:
                 self.rect.x, self.rect.y = new_pos
                 EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
                 self.teleport_cooldown = randint(5000, 10000)
                 self.last_shot_time = current_time
+            else:
+                self.teleport_cooldown = randint(5000, 10000)
+
         # Reset frame index when looping animation
         if self.frame_index >= len(self._animation["Idle"][self.direction]):
             self.frame_index = 0
