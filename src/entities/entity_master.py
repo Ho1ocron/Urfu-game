@@ -11,6 +11,7 @@ class EntityMaster:
     enemy_collision_radius: int = 100
 
     bullet_group = pygame.sprite.Group()
+    fbullet_group = pygame.sprite.Group()
 
     all_sprites = pygame.sprite.Group() 
 
@@ -54,12 +55,20 @@ class EntityMaster:
         cls.bullet_group.add(bullet)
         cls.all_sprites.add(bullet)
 
+    @classmethod 
+    def add_fbullet(cls, fbullet: pygame.sprite.Sprite) -> None:
+        """Adds foes' bullets to their own group so they can collide with the player."""
+        cls.fbullet_group.add(fbullet)
+        cls.all_sprites.add(fbullet)
+
     @classmethod
     def clear_all(cls) -> None:
         """Clear all sprite groups."""
         cls.player_group.empty()
         cls.enemy_group.empty()
         cls.all_sprites.empty()
+        cls.bullet_group.empty()
+        cls.fbullet_group.empty()
 
     @classmethod
     def check_collisions(cls) -> None:
