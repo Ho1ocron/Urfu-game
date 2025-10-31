@@ -56,18 +56,23 @@ class Dragon(BaseEntity):
         self.hp -= other.attack
     
     def update(self):
-        if self.rect.x + 20 < EntityMaster.player_pos[0]:
-            self.direction = "right"
+        dx = EntityMaster.player_pos[0] - (self.rect.x + 20)
+        dy = EntityMaster.player_pos[1] - (self.rect.y + 20)
+
+        # Decide which axis is more dominant (abs distance)
+        if abs(dx) > abs(dy):
+            if dx > 0:
+                self.direction = "right"
+            else:
+                self.direction = "left"
         else:
-            self.direction = "left"
-        if self.rect.y + 20 > EntityMaster.player_pos[1]:
-            self.direction = "up"
-        else:
-            self.direction = "down"
+            if dy > 0:
+                self.direction = "down"
+            else:
+                self.direction = "up"
 
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot_time >= self.teleport_cooldown + randint(-500, 5000):
-            # if randint(0, 100) < 20:  
             new_pos = (randint(50, 520), randint(50, 650))
             if EntityMaster.is_position_free(new_pos) and new_pos != EntityMaster.player_pos:
                 self.rect.x, self.rect.y = new_pos
