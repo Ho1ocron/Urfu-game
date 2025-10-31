@@ -13,8 +13,8 @@
             "Walk_down": "K_DOWN",
             "Walk_right": "K_RIGHT",
             "Walk_left": "K_LEFT",
-            "Shoot": "K_c",
-            "Dash": "K_x",
+            "Shoot": "K_SPACE",
+            "Dash": "K_LSHIFT",
             "Heal": "K_z",
             "Give_up": "K_BACKSPACE"
         }

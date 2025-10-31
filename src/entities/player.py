@@ -46,7 +46,7 @@ class Knight(BaseEntity):
         self.hitbox_margin = 42
         self.update_hitbox()
 
-        self.shoot_cooldown = 300  # milliseconds between shots
+        self.shoot_cooldown = 200  # milliseconds between shots
         self.last_shot_time = 0
 
         self.heal_cooldown = 5000
@@ -190,8 +190,8 @@ class Bullet(BaseEntity):
         elif self.direction == "down":
             self.rect.y += self.speed
 
-        if (self.rect.x < 0 or self.rect.x > 800 or 
-            self.rect.y < 0 or self.rect.y > 600):
+        if (self.rect.x < 0 or self.rect.x > 1000 or 
+            self.rect.y < 0 or self.rect.y > 1000):
             self.kill()
 
         if self._hp <= 0:
