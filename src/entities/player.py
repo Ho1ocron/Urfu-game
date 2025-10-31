@@ -74,6 +74,8 @@ class Knight(BaseEntity):
             self.last_shot_time = current_time
 
     def handle_input(self, keys) -> None:
+        if self.hp <= 0:
+            self.kill()
         """Handle keyboard input for movement and animation."""
         moving = False
         dx, dy = 0, 0

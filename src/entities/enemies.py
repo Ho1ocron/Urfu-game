@@ -156,5 +156,4 @@ class Fbullet(BaseEntity):
     def on_collision(self, other: BaseEntity) -> None:
         self.hp -= other.attack
         other.hp -= self._attack
-        print(f"Bullet collided with {other}")
         self.kill()

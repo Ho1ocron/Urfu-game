@@ -79,3 +79,10 @@ class EntityMaster:
             )
             for enemy in collided_enemies:
                 bullet.on_collision(enemy)
+
+        for fbullet in cls.fbullet_group:
+            collided_player = pygame.sprite.spritecollide(
+                fbullet, cls.player_group, False, pygame.sprite.collide_mask
+            )
+            for player in collided_player:
+                fbullet.on_collision(player)
