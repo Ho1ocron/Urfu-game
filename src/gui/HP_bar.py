@@ -11,7 +11,7 @@ class HPBar:
         self.bg_color = bg_color
         self.border_color = (50, 50, 50)
 
-    def draw(self):
+    def draw(self) -> None:
         """Draw the HP bar based on player's current health."""
         current_hp = self.player.hp
         max_hp = self.player.max_hp

@@ -7,7 +7,7 @@ from entities.entity import BaseEntity
 from entities.entity_master import EntityMaster
 
 
-class Dragon(BaseEntity):
+class Doppelganger(BaseEntity):
     """Generic enemy class."""
     _id: int
 
