@@ -12,7 +12,9 @@
             "Walk_up": "K_UP",
             "Walk_down": "K_DOWN",
             "Walk_right": "K_RIGHT",
-            "Walk_left": "K_LEFT"
+            "Walk_left": "K_LEFT",
+            "Shoot": "K_SPACE",
+            "Dash": "K_LSHIFT"
         }
     },
 

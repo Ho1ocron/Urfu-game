@@ -74,10 +74,25 @@ class Knight(BaseEntity):
             bullet.rect.center = self.rect.center
             self.last_shot_time = current_time
 
+    def dash(self) -> None:
+        """Dashes the player forward"""
+        if self.direction == "up":
+            self.rect.y -= 20
+        if self.direction == "down":
+            self.rect.y += 20
+
+        if self.direction == "right":
+            self.rect.x += 20
+        if self.direction == "left":
+            self.rect.x -= 20
+
+
+
     def handle_input(self, keys) -> None:
+        """Handle keyboard input for movement and animation."""
         if self.hp <= 0:
             self.kill()
-        """Handle keyboard input for movement and animation."""
+
         moving = False
         dx, dy = 0, 0
 
@@ -97,8 +112,10 @@ class Knight(BaseEntity):
             dy += 1
             self.direction = "down"
             moving = True
-        if keys[pygame.K_SPACE]:
+        if keys[self._controls["Shoot"]]:
             self.shoot()
+        if keys[self._controls["Dash"]]:
+            self.dash()
 
         # Normalize diagonal movement
         if dx != 0 or dy != 0:
