@@ -35,7 +35,7 @@ class Dragon(BaseEntity):
         self._id = _id
 
         self.teleport_cooldown = randint(7000, 10000)
-        self.last_shot_time = 0
+        self.last_shot_time = pygame.time.get_ticks() - randint(0, self.teleport_cooldown)
 
         EntityMaster.add_enemy(self)
         EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
@@ -67,7 +67,8 @@ class Dragon(BaseEntity):
             self.direction = "down"
 
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time >= self.teleport_cooldown:
+        if current_time - self.last_shot_time >= self.teleport_cooldown + randint(-500, 500):
+            # if randint(0, 100) < 20:  
             new_pos = (randint(50, 520), randint(50, 650))
             if new_pos not in EntityMaster.enemy_poses.values() and new_pos != EntityMaster.player_pos:
                 self.rect.x, self.rect.y = new_pos
