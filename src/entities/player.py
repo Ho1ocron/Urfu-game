@@ -122,7 +122,7 @@ class Knight(BaseEntity):
             moving = True
         if keys[self._controls["Shoot"]]:
             self.shoot()
-        if keys[self._controls["Dash"]]:
+        if keys[self._controls["Dash"]] and moving:
             self.dash()
         if keys[self._controls["Heal"]]:
             self.heal()
