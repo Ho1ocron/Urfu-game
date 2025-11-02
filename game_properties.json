@@ -65,27 +65,27 @@
             },
                         "Sprite_properties": {
                 "Sprite_size": 192,
-                "Sprites_per_row": 3,
+                "Sprites_per_row": 1,
                 "Sprite_scale": 2,
-                "Sprite_width": 48,
-                "Sprite_height": 64,
-                "Num_sprites": 8,
+                "Sprite_width": 68,
+                "Sprite_height": 61,
+                "Num_sprites": 1,
                 "Scale": 2.0,
 
                 "Frames_path": {
                     "Walk": {
-                        "up": "./assets/Adventure/Walk/walk_up.png",
-                        "down": "./assets/Adventure/Walk/walk_down.png",
-                        "left": "./assets/Adventure/Walk/walk_left_down.png",
-                        "right": "./assets/Adventure/Walk/walk_right_down.png",
+                        "up": "./assets/Dragon/Dragon.png",
+                        "down": "./assets/Dragon/Dragon.png",
+                        "left": "./assets/Dragon/Dragon.png",
+                        "right": "./assets/Dragon/Dragon.png",
                         "animation_speed": 2
                     },
 
                     "Idle": {
-                        "up": "./assets/Adventure/Idle/idle_up.png",
-                        "down": "./assets/Adventure/Idle/idle_down.png",
-                        "left": "./assets/Adventure/Idle/idle_left_down.png",
-                        "right": "./assets/Adventure/Idle/idle_right_down.png",
+                        "up": "./assets/Dragon/Dragon.png",
+                        "down": "./assets/Dragon/Dragon.png",
+                        "left": "./assets/Dragon/Dragon.png",
+                        "right": "./assets/Dragon/Dragon.png",
                         "animation_speed": 2
                     }
                 } 

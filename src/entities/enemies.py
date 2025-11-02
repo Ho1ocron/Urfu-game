@@ -11,7 +11,7 @@ class Doppelganger(BaseEntity):
     """Generic enemy class."""
     _id: int
 
-    def __init__(self, init_pos: tuple[int] = (0, 0), sprite_name: str = "Dragon", _id: str = "enemy1"):
+    def __init__(self, init_pos: tuple[int] = (0, 0), sprite_name: str = "Knight", _id: str = "enemy1"):
         pygame.sprite.Sprite.__init__(self)
         
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
@@ -146,8 +146,8 @@ class Fbullet(BaseEntity):
         elif self.direction == "down":
             self.rect.y += self.speed
 
-        if (self.rect.x < 0 or self.rect.x > 800 or 
-            self.rect.y < 0 or self.rect.y > 600):
+        if (self.rect.x < 0 or self.rect.x > 1000 or 
+            self.rect.y < 0 or self.rect.y > 1000):
             self.kill()
 
         if self._hp <= 0:
