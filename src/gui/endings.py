@@ -5,10 +5,19 @@ from sys import exit as sys_exit
 class EndingScreen:
     """Displays an ending screen with restart and exit buttons."""
 
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    GREY = (100, 100, 100)
-    LIGHT_GREY = (170, 170, 170)
+    BLACK = (10, 15, 30)
+    WHITE = (230, 230, 230)
+    BUTTON_COLOR = (50, 100, 180)
+    BUTTON_HOVER = (80, 130, 210)
+
+    # self.BACKGROUND = (10, 15, 30)  # dark blue-ish background
+    # self.TEXT_COLOR = (230, 230, 230)
+    # self.SUBTEXT_COLOR = (255, 100, 120)
+    # self.GOAL_COLOR = (120, 180, 255)
+    # self.BUTTON_COLOR = (50, 100, 180)
+    # self.BUTTON_HOVER = (80, 130, 210)
+    # self.EXIT_COLOR = (150, 50, 50)
+    # self.EXIT_HOVER = (200, 70, 70)
 
     ENDING_MESSAGES = {
         "bad": "You Lost! Try Again.",
@@ -45,7 +54,7 @@ class EndingScreen:
 
     def draw_button(self, rect: pygame.Rect, text: str, hover: bool = False):
         """Draws a button with hover effect and text."""
-        color = self.LIGHT_GREY if hover else self.GREY
+        color = self.BUTTON_HOVER if hover else self.BUTTON_COLOR
         pygame.draw.rect(self._screen, color, rect, border_radius=12)
         pygame.draw.rect(self._screen, self.WHITE, rect, width=2, border_radius=12)
         label = self.button_font.render(text, True, self.WHITE)
