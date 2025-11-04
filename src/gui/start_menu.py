@@ -51,6 +51,8 @@ class StartMenu:
                            (self.screen_size[0] // 2, 280))
             self.draw_text("Shift - Dash", 28, self.SUBTEXT_COLOR,
                            (self.screen_size[0] // 2, 310))
+            self.draw_text("Z - Heal", 28, self.SUBTEXT_COLOR,
+                           (self.screen_size[0] // 2, 340))
 
             # Goal
             self.draw_text("Goal: Eliminate all your doppelgangers", 30, self.GOAL_COLOR,
