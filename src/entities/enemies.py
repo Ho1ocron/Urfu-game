@@ -110,7 +110,7 @@ class Doppelganger(BaseEntity):
 
 
 class Dragon(BaseEntity):
-    """The main boss of the game that player should kill"""
+    """The main boss of the game that player should kill."""
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -119,25 +119,30 @@ class Dragon(BaseEntity):
         self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
         self.game_props = GameProperties(sprite_name)
 
-        hp = 200
-        attack = 10
-        speed = 0  # The dragon does not move
+        # Load stats from GameProperties
+        hp = self.game_props.char_properties["HP"]
+        attack = self.game_props.char_properties["Attack"]
+        speed = self.game_props.char_properties.get("Speed", 0)  # Default to 0 if not defined
 
-        # Place it at the center-top of the screen
-        center_x = 620 // 2
-        center_y = 100  # Slightly below the top border
+        # Place at center-top of screen
+        screen_w, screen_h = 620, 750
+        center_x = screen_w // 2
+        center_y = 100  # Slightly below the top edge
         dummy_hitbox = pygame.Rect(0, 0, 128, 128)
         BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
 
+        # Animation setup
         self._animation = self.sprite_handler.animation
         self.direction = "down"
         self.frame_index = 0
         self.image = self._get_current_frame("Idle")
         self.rect = self.image.get_rect(center=(center_x, center_y))
 
-        self.shoot_cooldown = randint(1000, 4000)  # Shoot randomly between 1-4 seconds
+        # Shooting setup
+        self.shoot_cooldown = randint(3000, 7000)  # 3–7 seconds between volleys
         self.last_shot_time = pygame.time.get_ticks() - randint(0, self.shoot_cooldown)
 
+        # Register in EntityMaster
         EntityMaster.add_enemy(self)
         EntityMaster.add_enemy_pos({"Dragon": (self.rect.x, self.rect.y)})
 
@@ -155,24 +160,26 @@ class Dragon(BaseEntity):
         )
 
     def shoot(self) -> None:
+        """Shoots a burst of bullets in multiple directions."""
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot_time >= self.shoot_cooldown:
-            # Choose a random direction
-            bullet = Fbullet(direction=self.direction)
-            bullet.rect.center = self.rect.center
+            directions = ["down", "left", "right", "downleft", "downright"]
+            for direction in directions:
+                bullet = Fbullet(direction=self.direction)
+                bullet.rect.center = self.rect.center
 
-            self.shoot_cooldown = randint(2000, 6000)  # Randomize next attack
+            # Randomize next cooldown between 3–7 seconds
+            self.shoot_cooldown = randint(1000, 5000)
             self.last_shot_time = current_time
 
     def update(self) -> None:
-        """Dragon only shoots and updates animation; it does not move."""
+        """Dragon only shoots and animates."""
         self.shoot()
 
-        # Animate the dragon idle
+        # Update animation
         self.frame_index += 0.1
         if self.frame_index >= len(self._animation["Idle"][self.direction]):
             self.frame_index = 0
-
         self.image = self._get_current_frame("Idle")
 
         if self.hp <= 0:
