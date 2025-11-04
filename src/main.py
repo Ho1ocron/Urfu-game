@@ -32,7 +32,7 @@ class Game(pygame.sprite.Group):
 
         # Initialize game
         self._player = Knight(init_pos=(310 - 64 // 2, 375))
-        for i in range(5):
+        for i in range(7):
             self._enemy = Doppelganger(_id=f"Enemy{i}")
 
         self._dragon = Dragon()

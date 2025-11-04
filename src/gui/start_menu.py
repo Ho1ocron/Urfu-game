@@ -33,7 +33,7 @@ class StartMenu:
         self.screen.blit(text_surface, text_rect)
 
     def show(self) -> None:
-        """Displays the start menu until the player clicks 'Proceed' or 'Exit'."""
+        """Displays the start menu until the player presses Enter, clicks 'Proceed', or exits."""
         running = True
         while running:
             self.screen.fill(self.BACKGROUND)
@@ -64,22 +64,29 @@ class StartMenu:
                 pygame.draw.rect(self.screen, self.BUTTON_HOVER, self.proceed_rect, border_radius=15)
             else:
                 pygame.draw.rect(self.screen, self.BUTTON_COLOR, self.proceed_rect, border_radius=15)
-            self.draw_text("Proceed", 36, (255, 255, 255), self.proceed_rect.center)
+            self.draw_text("Proceed (Enter)", 36, (255, 255, 255), self.proceed_rect.center)
 
             # Exit button
             if self.exit_rect.collidepoint(mouse_pos):
                 pygame.draw.rect(self.screen, self.EXIT_HOVER, self.exit_rect, border_radius=15)
             else:
                 pygame.draw.rect(self.screen, self.EXIT_COLOR, self.exit_rect, border_radius=15)
-            self.draw_text("Exit", 36, (255, 255, 255), self.exit_rect.center)
+            self.draw_text("Exit (Esc)", 36, (255, 255, 255), self.exit_rect.center)
 
             # Event handling
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys_exit()
+
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:  # Enter starts the game
+                        running = False
+                    elif event.key == pygame.K_ESCAPE:  # Esc exits
+                        sys_exit()
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.proceed_rect.collidepoint(event.pos):
-                        running = False  # Exit menu, start game
+                        running = False  # Start game
                     elif self.exit_rect.collidepoint(event.pos):
                         sys_exit()  # Quit game
 
