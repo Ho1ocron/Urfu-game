@@ -85,8 +85,8 @@ class EndingScreen:
             exit_hover = self.exit_button_rect.collidepoint(mouse_pos)
 
             # Draw buttons
-            self.draw_button(self.restart_button_rect, "Restart", restart_hover)
-            self.draw_button(self.exit_button_rect, "Exit", exit_hover)
+            self.draw_button(self.restart_button_rect, "Restart (Enter)", restart_hover)
+            self.draw_button(self.exit_button_rect, "Exit (Esc)", exit_hover)
 
             pygame.display.flip()
 
@@ -94,10 +94,18 @@ class EndingScreen:
                 if event.type == pygame.QUIT:
                     sys_exit()
 
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:  # Enter restarts the game
+                        self.reset_game()
+                        from main import main
+                        main()
+                    elif event.key == pygame.K_ESCAPE:  # Esc exits
+                        sys_exit()
+
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if self.restart_button_rect.collidepoint(event.pos):
                         self.reset_game()
-                        from main import main  # local import avoids circular import
+                        from main import main
                         main()
                     elif self.exit_button_rect.collidepoint(event.pos):
                         sys_exit()
