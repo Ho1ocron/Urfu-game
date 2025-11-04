@@ -16,7 +16,7 @@ class Game(pygame.sprite.Group):
     _screen: pygame.Surface
     __clock = pygame.time.Clock()
 
-    BLACK = (0, 0, 0)
+    BLACK = (10, 15, 30)
 
     def __init__(self) -> None:
         super().__init__()
