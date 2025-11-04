@@ -2,7 +2,7 @@ from sys import exit as sys_exit
 import pygame
 
 from utils import GameProperties
-from entities import Knight, Doppelganger, EntityMaster
+from entities import Knight, Doppelganger, EntityMaster, Dragon
 from gui import HPBar
 from gui import StartMenu
 
@@ -34,6 +34,8 @@ class Game(pygame.sprite.Group):
         self._player = Knight(init_pos=(310 - 64 // 2, 375))
         for i in range(5):
             self._enemy = Doppelganger(_id=f"Enemy{i}")
+
+        self._dragon = Dragon()
 
         EntityMaster.all_sprites.draw(self._screen)
         self._screen_rect = pygame.Rect((0, 0), self.__screen_size)

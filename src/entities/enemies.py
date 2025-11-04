@@ -109,6 +109,77 @@ class Doppelganger(BaseEntity):
             self.kill()
 
 
+class Dragon(BaseEntity):
+    """The main boss of the game that player should kill"""
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+        sprite_name = "Dragon"
+        self.sprite_handler = SpriteHandler(char_sprite=sprite_name)
+        self.game_props = GameProperties(sprite_name)
+
+        hp = 200
+        attack = 10
+        speed = 0  # The dragon does not move
+
+        # Place it at the center-top of the screen
+        center_x = 620 // 2
+        center_y = 100  # Slightly below the top border
+        dummy_hitbox = pygame.Rect(0, 0, 128, 128)
+        BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
+
+        self._animation = self.sprite_handler.animation
+        self.direction = "down"
+        self.frame_index = 0
+        self.image = self._get_current_frame("Idle")
+        self.rect = self.image.get_rect(center=(center_x, center_y))
+
+        self.shoot_cooldown = randint(1000, 4000)  # Shoot randomly between 1-4 seconds
+        self.last_shot_time = pygame.time.get_ticks() - randint(0, self.shoot_cooldown)
+
+        EntityMaster.add_enemy(self)
+        EntityMaster.add_enemy_pos({"Dragon": (self.rect.x, self.rect.y)})
+
+        self.update_hitbox()
+
+    def _get_current_frame(self, action: str = "Idle") -> pygame.Surface:
+        frames = self._animation[action][self.direction]
+        frame: MatLike = frames[int(self.frame_index) % len(frames)]
+        return pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGBA")
+
+    def update_hitbox(self) -> None:
+        self.hitbox = pygame.Rect(
+            self.rect.x + 42, self.rect.y + 42,
+            self.rect.width - 84, self.rect.height - 84
+        )
+
+    def shoot(self) -> None:
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time >= self.shoot_cooldown:
+            # Choose a random direction
+            bullet = Fbullet(direction=self.direction)
+            bullet.rect.center = self.rect.center
+
+            self.shoot_cooldown = randint(2000, 6000)  # Randomize next attack
+            self.last_shot_time = current_time
+
+    def update(self) -> None:
+        """Dragon only shoots and updates animation; it does not move."""
+        self.shoot()
+
+        # Animate the dragon idle
+        self.frame_index += 0.1
+        if self.frame_index >= len(self._animation["Idle"][self.direction]):
+            self.frame_index = 0
+
+        self.image = self._get_current_frame("Idle")
+
+        if self.hp <= 0:
+            EntityMaster.remove_enemy_pos("Dragon")
+            self.kill()
+
+
 class Fbullet(BaseEntity):
     """Fbullet is a bullet for foes that they can strike player with."""
     _hp = 1
