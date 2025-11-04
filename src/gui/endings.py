@@ -10,15 +10,6 @@ class EndingScreen:
     BUTTON_COLOR = (50, 100, 180)
     BUTTON_HOVER = (80, 130, 210)
 
-    # self.BACKGROUND = (10, 15, 30)  # dark blue-ish background
-    # self.TEXT_COLOR = (230, 230, 230)
-    # self.SUBTEXT_COLOR = (255, 100, 120)
-    # self.GOAL_COLOR = (120, 180, 255)
-    # self.BUTTON_COLOR = (50, 100, 180)
-    # self.BUTTON_HOVER = (80, 130, 210)
-    # self.EXIT_COLOR = (150, 50, 50)
-    # self.EXIT_HOVER = (200, 70, 70)
-
     ENDING_MESSAGES = {
         "bad": "You Lost! Try Again.",
         "good": "Good Job! But not all enemies were slain...",
