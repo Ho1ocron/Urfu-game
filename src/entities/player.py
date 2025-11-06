@@ -71,6 +71,7 @@ class Knight(BaseEntity):
         )
 
     def shoot(self) -> None:
+        """Func for handling player's shooting."""
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot_time >= self.shoot_cooldown:
             bullet = Bullet(direction=self.direction)
