@@ -21,7 +21,7 @@ Kill the **Dragon** — the main boss — and all the **Doppelgangers** it summo
 |-----|---------|
 | `Up / Left / Down / Right` | Move up / left / down / right |
 | `SPACE` | Attack / Shoot |
-| `ESC` | Pause / Quit |
+| `ESC` | Quit |
 | `Z` | Heal |
 
 ---
