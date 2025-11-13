@@ -5,6 +5,7 @@ Your mission: **defeat the dragon** and **eliminate all of its doppelgangers** b
 
 ---
 
+
 ## 🎮 Gameplay Overview
 
 You play as a lone hero in a closed arena where a mighty dragon and its summoned doppelgangers threaten the realm.  
@@ -35,7 +36,7 @@ Kill the **Dragon** — the main boss — and all the **Doppelgangers** it summo
 - **Health system** for both player and enemies
 - **Particle effects** (optional visual polish)
 - **Sound effects & background music**
-- Simple **victory / game over screens**
+- **victory / game over screens**
 
 ---
 
