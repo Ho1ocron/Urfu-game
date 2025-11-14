@@ -5,7 +5,6 @@ Your mission: **defeat the dragon** and **eliminate all of its doppelgangers** b
 
 ---
 
-
 ## 🎮 Gameplay Overview
 
 You play as a lone hero in a closed arena where a mighty dragon and its summoned doppelgangers threaten the realm.  
@@ -36,37 +35,43 @@ Kill the **Dragon** — the main boss — and all the **Doppelgangers** it summo
 - **Health system** for both player and enemies
 - **Particle effects** (optional visual polish)
 - **Sound effects & background music**
-- **victory / game over screens**
+- Simple **victory / game over screens**
 
 ---
-
 
 ## ⚙️ Installation & Setup
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/Urfu-game.git
-   cd Urfu-game
+
+    ```bash
+    git clone https://github.com/yourusername/Urfu-game.git
+    cd Urfu-game
     ```
 
-2. **Virtual Environment**
+2. **Virtual Environment**.
+
     Linux/MacOS
+
     ```bash
-    python3 -m venv venv
+    python3 -m venv venvå
     source ./venv/bin/activate
     ```
+
     Windows
+
     ```bash
     python -m venv venv
     .venv/Scripts/activate
     ```
 
 3. **Install all dependencies**
+
     ```bash
     pip install -r requirements.txt
     ```
-   
+
 4. **Run the game**
+
     ```bash
     python src/main.py
     ```
