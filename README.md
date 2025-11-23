@@ -71,7 +71,6 @@ Kill the **Dragon** — the main boss — and all the **Doppelgangers** it summo
     ```
 
 4. **Run the game**
-
     ```bash
     python src/main.py
     ```
