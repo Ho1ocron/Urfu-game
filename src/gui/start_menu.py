@@ -1,5 +1,9 @@
+import os
 import pygame
+import pygame._freetype as _freetype
 from sys import exit as sys_exit
+
+_FONT_PATH = os.path.join(os.path.dirname(pygame.__file__), "freesansbold.ttf")
 
 
 class StartMenu:
@@ -11,7 +15,7 @@ class StartMenu:
         self.clock = pygame.time.Clock()
 
         # Colors
-        self.BACKGROUND = (10, 15, 30)  # dark blue-ish background
+        self.BACKGROUND = (10, 15, 30)
         self.TEXT_COLOR = (230, 230, 230)
         self.SUBTEXT_COLOR = (255, 100, 120)
         self.GOAL_COLOR = (120, 180, 255)
@@ -27,10 +31,10 @@ class StartMenu:
         self.exit_rect.center = (self.screen_size[0] // 2, self.screen_size[1] // 2 + 200)
 
     def draw_text(self, text: str, size: int, color: tuple[int, int, int], center: tuple[int, int]):
-        font = pygame.font.Font(None, size)
-        text_surface = font.render(text, True, color)
-        text_rect = text_surface.get_rect(center=center)
-        self.screen.blit(text_surface, text_rect)
+        font = _freetype.Font(_FONT_PATH, size)
+        surface, rect = font.render(text, color)
+        rect.center = center
+        self.screen.blit(surface, rect)
 
     def show(self) -> None:
         """Displays the start menu until the player presses Enter, clicks 'Proceed', or exits."""
@@ -81,16 +85,16 @@ class StartMenu:
                     sys_exit()
 
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:  # Enter starts the game
+                    if event.key == pygame.K_RETURN:
                         running = False
-                    elif event.key == pygame.K_ESCAPE:  # Esc exits
+                    elif event.key == pygame.K_ESCAPE:
                         sys_exit()
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.proceed_rect.collidepoint(event.pos):
-                        running = False  # Start game
+                        running = False
                     elif self.exit_rect.collidepoint(event.pos):
-                        sys_exit()  # Quit game
+                        sys_exit()
 
             pygame.display.flip()
             self.clock.tick(30)

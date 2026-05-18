@@ -163,9 +163,9 @@ class Dragon(BaseEntity):
         """Shoots a burst of bullets in multiple directions."""
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot_time >= self.shoot_cooldown:
-            directions = ["down", "left", "right", "downleft", "downright"]
+            directions = ["down", "left", "right"]
             for direction in directions:
-                bullet = Fbullet(direction=self.direction)
+                bullet = Fbullet(direction=direction)
                 bullet.rect.center = self.rect.center
 
             # Randomize next cooldown between 3–7 seconds

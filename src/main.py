@@ -1,5 +1,6 @@
 from sys import exit as sys_exit
 import pygame
+import pygame._freetype as _freetype
 
 from utils import GameProperties
 from entities import Knight, Doppelganger, EntityMaster, Dragon
@@ -21,6 +22,7 @@ class Game(pygame.sprite.Group):
     def __init__(self) -> None:
         super().__init__()
         pygame.init()
+        _freetype.init()
 
         self.__screen_size = self._game_properties.screen_size
         self._screen = pygame.display.set_mode(self.__screen_size)

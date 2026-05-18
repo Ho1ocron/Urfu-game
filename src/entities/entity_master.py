@@ -69,6 +69,7 @@ class EntityMaster:
         cls.all_sprites.empty()
         cls.bullet_group.empty()
         cls.fbullet_group.empty()
+        cls.enemy_poses.clear()
 
     @classmethod
     def check_collisions(cls) -> None:

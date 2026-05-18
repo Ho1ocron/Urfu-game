@@ -137,8 +137,6 @@ class Knight(BaseEntity):
             self.rect.x += dx * self._speed
             self.rect.y += dy * self._speed
 
-            self.frame_index += self.animation_speed
-
         current_action = "Walk" if moving else "Idle"
         self.frame_index += self.animation_speed if moving else 0.2
 

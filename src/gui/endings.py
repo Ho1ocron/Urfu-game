@@ -1,5 +1,10 @@
+import os
+import sys
 import pygame
+import pygame._freetype as _freetype
 from sys import exit as sys_exit
+
+_FONT_PATH = os.path.join(os.path.dirname(pygame.__file__), "freesansbold.ttf")
 
 
 class EndingScreen:
@@ -21,11 +26,9 @@ class EndingScreen:
         self._screen_size = screen_size
         self._clock = pygame.time.Clock()
 
-        # Adjusted font sizes for smaller screens
-        self.title_font = pygame.font.Font(None, 48)
-        self.button_font = pygame.font.Font(None, 28)
+        self.title_font = _freetype.Font(_FONT_PATH, 48)
+        self.button_font = _freetype.Font(_FONT_PATH, 28)
 
-        # Button setup (stacked vertically)
         self.button_width = 200
         self.button_height = 55
         center_x = screen_size[0] // 2
@@ -48,16 +51,15 @@ class EndingScreen:
         color = self.BUTTON_HOVER if hover else self.BUTTON_COLOR
         pygame.draw.rect(self._screen, color, rect, border_radius=12)
         pygame.draw.rect(self._screen, self.WHITE, rect, width=2, border_radius=12)
-        label = self.button_font.render(text, True, self.WHITE)
-        label_rect = label.get_rect(center=rect.center)
-        self._screen.blit(label, label_rect)
+        label_surface, label_rect = self.button_font.render(text, self.WHITE)
+        label_rect.center = rect.center
+        self._screen.blit(label_surface, label_rect)
 
     def reset_game(self):
         """Completely clears game state before restarting."""
         from entities.entity_master import EntityMaster
         EntityMaster.clear_all()
 
-        # Reset pygame display surface (optional but clean)
         self._screen.fill(self.BLACK)
         pygame.display.flip()
 
@@ -69,22 +71,19 @@ class EndingScreen:
         while running:
             self._screen.fill(self.BLACK)
 
-            # Render main message (wrap long lines)
-            wrapped_lines = self.wrap_text(text, self.title_font, self._screen_size[0] - 60)
+            wrapped_lines = self.wrap_text(self.title_font, text, self._screen_size[0] - 60)
             y_offset = self._screen_size[1] // 2 - 100
 
             for line in wrapped_lines:
-                line_surface = self.title_font.render(line, True, self.WHITE)
-                line_rect = line_surface.get_rect(center=(self._screen_size[0] // 2, y_offset))
+                line_surface, line_rect = self.title_font.render(line, self.WHITE)
+                line_rect.center = (self._screen_size[0] // 2, y_offset)
                 self._screen.blit(line_surface, line_rect)
                 y_offset += 50
 
-            # Handle hover
             mouse_pos = pygame.mouse.get_pos()
             restart_hover = self.restart_button_rect.collidepoint(mouse_pos)
             exit_hover = self.exit_button_rect.collidepoint(mouse_pos)
 
-            # Draw buttons
             self.draw_button(self.restart_button_rect, "Restart (Enter)", restart_hover)
             self.draw_button(self.exit_button_rect, "Exit (Esc)", exit_hover)
 
@@ -95,24 +94,22 @@ class EndingScreen:
                     sys_exit()
 
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:  # Enter restarts the game
+                    if event.key == pygame.K_RETURN:
                         self.reset_game()
-                        from main import main
-                        main()
-                    elif event.key == pygame.K_ESCAPE:  # Esc exits
+                        os.execv(sys.executable, [sys.executable] + sys.argv)
+                    elif event.key == pygame.K_ESCAPE:
                         sys_exit()
 
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if self.restart_button_rect.collidepoint(event.pos):
                         self.reset_game()
-                        from main import main
-                        main()
+                        os.execv(sys.executable, [sys.executable] + sys.argv)
                     elif self.exit_button_rect.collidepoint(event.pos):
                         sys_exit()
 
             self._clock.tick(30)
 
-    def wrap_text(self, text: str, font: pygame.font.Font, max_width: int) -> list[str]:
+    def wrap_text(self, font: _freetype.Font, text: str, max_width: int) -> list[str]:
         """Splits text into multiple lines if it's too wide."""
         words = text.split()
         lines = []
@@ -120,7 +117,7 @@ class EndingScreen:
 
         for word in words:
             test_line = f"{current_line} {word}".strip()
-            if font.size(test_line)[0] <= max_width:
+            if font.get_rect(test_line).width <= max_width:
                 current_line = test_line
             else:
                 lines.append(current_line)
