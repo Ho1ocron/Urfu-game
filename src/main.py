@@ -4,7 +4,7 @@ import pygame._freetype as _freetype
 from cv2 import imread, resize, cvtColor, IMREAD_UNCHANGED, INTER_NEAREST, COLOR_BGRA2RGBA
 
 from utils import GameProperties
-from entities import Knight, Doppelganger, EntityMaster, Dragon
+from entities import Knight, Rat, EntityMaster, Dragon
 from gui import HPBar, StartMenu
 from gui import EndingScreen 
 
@@ -36,7 +36,7 @@ class Game(pygame.sprite.Group):
         # Initialize game
         self._player = Knight(init_pos=(310 - 64 // 2, 375))
         for i in range(7):
-            self._enemy = Doppelganger(_id=f"Enemy{i}")
+            self._enemy = Rat(_id=f"Rat{i}")
 
         self._dragon = Dragon()
 
@@ -46,7 +46,7 @@ class Game(pygame.sprite.Group):
 
         # add background surface
         sheet = imread("assets/Sprites/GRASS+.png", IMREAD_UNCHANGED)
-        raw_tile = sheet[8 * 16:(8 + 1) * 16, 17 * 16:(17 + 1) * 16]
+        raw_tile = sheet[0 * 16:(0 + 1) * 16, 0 * 16:(0 + 1) * 16]
         scale = self._game_properties.game_scale
         tile_size = int(16 * scale)
         raw_tile = resize(raw_tile, (tile_size, tile_size), interpolation=INTER_NEAREST)

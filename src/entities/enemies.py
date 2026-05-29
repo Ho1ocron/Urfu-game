@@ -1,4 +1,6 @@
+import math
 import pygame
+import cv2
 from cv2.typing import MatLike
 from random import randint
 
@@ -184,6 +186,131 @@ class Dragon(BaseEntity):
 
         if self.hp <= 0:
             EntityMaster.remove_enemy_pos("Dragon")
+            self.kill()
+
+
+class Rat(BaseEntity):
+    """Simple chasing enemy that bites the player when close."""
+    BITE_RANGE = 15
+    BITE_COOLDOWN = 1000  # ms between bites
+    HURT_DURATION = 200   # ms to show hurt (white) frame
+    FRAME_W = 32
+    FRAME_H = 32
+    FRAME_COUNT = 6
+    SCALE = 2.5
+
+    def __init__(self, _id: str = "rat0"):
+        pygame.sprite.Sprite.__init__(self)
+
+        hp = 100
+        attack = 10
+        speed = 3
+
+        dummy_hitbox = pygame.Rect(0, 0, self.FRAME_W * self.SCALE, self.FRAME_H * self.SCALE)
+        BaseEntity.__init__(self, hp=hp, attack=attack, speed=speed, hitbox=dummy_hitbox)
+
+        self._frames_run = self._load_sheet("./assets/Sprites/Rat/NoneOutlinedRat/rat-run.png")
+        self._frames_idle = self._load_sheet("./assets/Sprites/Rat/NoneOutlinedRat/rat-idle.png")
+        self._frame_hurt = self._load_single("./assets/Sprites/Rat/NoneOutlinedRat/rat-hurt.png")
+
+        self.frame_index: float = 0.0
+        self._moving = False
+        self._flip = False
+        self.image = self._frames_idle[0]
+
+        init_pos = (randint(50, 570), randint(50, 700))
+        self.rect = self.image.get_rect(center=init_pos)
+
+        self._id = _id
+        self._last_hp = hp
+        self._hurt_timer = -self.HURT_DURATION
+        self._bite_timer = pygame.time.get_ticks()
+
+        EntityMaster.add_enemy(self)
+        EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
+        self.update_hitbox()
+
+    def _load_sheet(self, path: str) -> list[pygame.Surface]:
+        sheet = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        frames = []
+        for i in range(self.FRAME_COUNT):
+            frame = sheet[0:self.FRAME_H, i * self.FRAME_W:(i + 1) * self.FRAME_W]
+            frame = cv2.resize(frame, (int(self.FRAME_W * self.SCALE), int(self.FRAME_H * self.SCALE)), interpolation=cv2.INTER_NEAREST)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGBA)
+            surf = pygame.image.frombuffer(frame.tobytes(), (int(self.FRAME_W * self.SCALE), int(self.FRAME_H * self.SCALE)), "RGBA")
+            frames.append(surf)
+        return frames
+
+    def _load_single(self, path: str) -> pygame.Surface:
+        img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        img = cv2.resize(img, (int(self.FRAME_W * self.SCALE), int(self.FRAME_H * self.SCALE)), interpolation=cv2.INTER_NEAREST)
+        img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
+        return pygame.image.frombuffer(img.tobytes(), (int(self.FRAME_W * self.SCALE), int(self.FRAME_H * self.SCALE)), "RGBA")
+
+    def update_hitbox(self) -> None:
+        self.hitbox = pygame.Rect(
+            self.rect.x + 8, self.rect.y + 8,
+            self.rect.width - 16, self.rect.height - 16
+        )
+
+    def on_collision(self, other: BaseEntity) -> None:
+        self.hp -= other.attack
+
+    def update(self) -> None:
+        current_time = pygame.time.get_ticks()
+
+        # Detect damage taken this frame
+        if self.hp < self._last_hp:
+            self._hurt_timer = current_time
+        self._last_hp = self.hp
+
+        # Chase or bite
+        px, py = EntityMaster.player_pos
+        dx = px - self.rect.centerx
+        dy = py - self.rect.centery
+        dist = math.sqrt(dx * dx + dy * dy)
+
+        if dist > self.BITE_RANGE:
+            self._moving = True
+            if dist > 0:
+                self.rect.x += int(self.speed * dx / dist)
+                self.rect.y += int(self.speed * dy / dist)
+            self._flip = dx < 0
+        else:
+            self._moving = False
+            if current_time - self._bite_timer >= self.BITE_COOLDOWN:
+                for player in EntityMaster.player_group:
+                    player.hp -= self.attack
+                self._bite_timer = current_time
+
+        # Separate from other rats so they don't stack
+        separation = self.FRAME_W * self.SCALE
+        for other in EntityMaster.enemy_group:
+            if other is self or not isinstance(other, Rat):
+                continue
+            odx = self.rect.centerx - other.rect.centerx
+            ody = self.rect.centery - other.rect.centery
+            odist = math.sqrt(odx * odx + ody * ody)
+            if 0 < odist < separation:
+                push = (separation - odist) / odist
+                self.rect.x += int(odx * push * 0.5)
+                self.rect.y += int(ody * push * 0.5)
+
+        EntityMaster.add_enemy_pos({self._id: (self.rect.x, self.rect.y)})
+        self.update_hitbox()
+
+        # Animate
+        hurting = (current_time - self._hurt_timer) < self.HURT_DURATION
+        if hurting:
+            self.image = self._frame_hurt
+        else:
+            frames = self._frames_run if self._moving else self._frames_idle
+            self.frame_index = (self.frame_index + 0.2) % len(frames)
+            frame = frames[int(self.frame_index)]
+            self.image = pygame.transform.flip(frame, self._flip, False)
+
+        if self.hp <= 0:
+            EntityMaster.remove_enemy_pos(self._id)
             self.kill()
 
 
