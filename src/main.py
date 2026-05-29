@@ -1,6 +1,7 @@
 from sys import exit as sys_exit
 import pygame
 import pygame._freetype as _freetype
+from cv2 import imread, resize, cvtColor, IMREAD_UNCHANGED, INTER_NEAREST, COLOR_BGRA2RGBA
 
 from utils import GameProperties
 from entities import Knight, Doppelganger, EntityMaster, Dragon
@@ -43,6 +44,20 @@ class Game(pygame.sprite.Group):
         self._screen_rect = pygame.Rect((0, 0), self.__screen_size)
         self.hp_bar = HPBar(self._player, self._screen, pos=(self.__screen_size[0] - 220, 20))
 
+        # add background surface
+        sheet = imread("assets/Sprites/GRASS+.png", IMREAD_UNCHANGED)
+        raw_tile = sheet[8 * 16:(8 + 1) * 16, 17 * 16:(17 + 1) * 16]
+        scale = self._game_properties.game_scale
+        tile_size = int(16 * scale)
+        raw_tile = resize(raw_tile, (tile_size, tile_size), interpolation=INTER_NEAREST)
+        raw_tile = cvtColor(raw_tile, COLOR_BGRA2RGBA)
+        scaled_tile = pygame.image.frombuffer(raw_tile.tobytes(), (tile_size, tile_size), "RGBA")
+        sw, sh = self.__screen_size
+        self._bg = pygame.Surface((sw, sh))
+        for ty in range(0, sh, tile_size):
+            for tx in range(0, sw, tile_size):
+                self._bg.blit(scaled_tile, (tx, ty))
+
         # Game state
         self.running = True
         self.ending_type = None
@@ -77,7 +92,7 @@ class Game(pygame.sprite.Group):
         EntityMaster.check_collisions()
         self.check_end_conditions()
 
-        self._screen.fill(self.BLACK)
+        self._screen.blit(self._bg, (0, 0))
         EntityMaster.all_sprites.draw(self._screen)
 
         if self._game_properties.debug:
